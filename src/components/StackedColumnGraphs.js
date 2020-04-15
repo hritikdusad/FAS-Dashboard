@@ -1,27 +1,51 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import DetailTable from './DetailTable';
 
 
 export default function StackedColumnGraphs(props) {
+    const [showModal, setModal] = useState(false);
+    const [xAxisPoint, setXAxisPoint] = useState('');
 
     let options = {
         chart: {
-            type: 'column'
+            type: 'column',
+            style:{
+                fontFamily:'serif'
+            }
         },
         title: {
-            text: props.Options.Title
+            text: props.Options.Title,
+            style:{
+                color:'#000000',
+                fontWeight:'bold'
+            }
         },
         xAxis: {
             title:{
-                text:props.Options.XAxisTitle
+                text:props.Options.XAxisTitle,
+                style:{
+                    fontWeight: 'bold',
+                    color: '#000000'
+                }
             },
-            categories: props.Options.XAxisLabels
+            categories: props.Options.XAxisLabels,
+            labels: {
+                style: {
+                    color: '#000000'
+                }
+            }
+            
         },
         yAxis: {
             min: 0,
             title: {
-                text: props.Options.YAxisTitle
+                text: props.Options.YAxisTitle,
+                style:{
+                    fontWeight: 'bold',
+                    color: '#000000'
+                }
             },
             stackLabels: {
                 enabled: true,
@@ -32,7 +56,13 @@ export default function StackedColumnGraphs(props) {
                         Highcharts.defaultOptions.title.style.color
                     ) || 'gray'
                 }
-            }
+            },
+            labels: {
+                style: {
+                    color: '#000000'
+                }
+            },
+            tickInterval: props.Options.YAxisTickInterval
         },
         legend: {
             align: 'right',
@@ -56,20 +86,38 @@ export default function StackedColumnGraphs(props) {
                 dataLabels: {
                     enabled: true
                 }
+            },
+            series:{
+                cursor: 'pointer',
+                point:{
+                        events:{
+                            click: function(){
+                                setXAxisPoint(this.category);
+                                setModal(!showModal);
+                            }
+                        }
+                }
             }
         },
         series: [{
             name: props.Options.UpperStackName,
             data: props.Options.UpperStackData,
             color: props.Options.UpperStackColor
-        }, {
+        }, 
+        {
             name: props.Options.LowerStackName,
             data: props.Options.LowerStackData,
-            color: props.Options.LowerStackColor           
+            color: props.Options.LowerStackColor
         }]
     };
-    console.log(props.Options.TimeLine);
-    return (
-        <HighchartsReact highcharts={Highcharts} options={options} />
-    )
+
+    //console.log(xAxisPoint);
+    return (showModal) ?
+                        <DetailTable 
+                                    open={true}
+                                    ChartOptions={props.Options}
+                                    ChartType="StackedColumn"
+                        />
+                        :
+                        <HighchartsReact highcharts={Highcharts} options={options} />
 }

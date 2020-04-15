@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Modal, Table } from 'semantic-ui-react';
 import PieCharts from './PieCharts';
 import ColumnGraphs from './ColumnGraphs';
 import StackedColumnGraphs from './StackedColumnGraphs';
@@ -21,7 +21,9 @@ export default class DetailTable extends Component {
             isModalOpen:false
         });
     }
+
     render() {
+
       if(this.state.isModalOpen === false){
           if(this.props.ChartType === "Pie"){
             return <PieCharts Options={this.props.ChartOptions} />
@@ -36,26 +38,39 @@ export default class DetailTable extends Component {
             return <LineGraphs Options={this.props.ChartOptions} />
           }
       }
+      let TableData = (
+        <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>1</Table.Cell>
+                          <Table.Cell>fund</Table.Cell>
+                          <Table.Cell>20-09-2020</Table.Cell>
+                          <Table.Cell>209-28-8562</Table.Cell>
+                        </Table.Row>
+        </Table.Body>
+    );
+      
+            
+                        
         return (
             <Modal open={this.state.isModalOpen}
                     onClose={this.handleClose}
-                    >
-            <Modal.Header>Profile Picture</Modal.Header>
+            >
+            <Modal.Header>{this.props.ChartOptions.Header}</Modal.Header>
             <Modal.Content image scrolling>
-              <Image size='medium' src='/images/wireframe/image.png' wrapped />
               <Modal.Description>
-                <Header>Modal Header</Header>
-                <p>
-                  This is an example of expanded content that will cause the modal's
-                  dimmer to scroll
-                </p>
+                  <Table celled>
+                  <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>ID</Table.HeaderCell>
+                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Start Date On FAS</Table.HeaderCell>
+                        <Table.HeaderCell>Creation Date On FAS</Table.HeaderCell>
+                      </Table.Row>
+                </Table.Header>
+                    {TableData}
+                  </Table>
               </Modal.Description>
             </Modal.Content>
-            <Modal.Actions>
-              <Button primary>
-                Proceed <Icon name='chevron right' />
-              </Button>
-            </Modal.Actions>
           </Modal>
         )
     }

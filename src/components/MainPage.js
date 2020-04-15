@@ -15,7 +15,7 @@ export default class MainPage extends Component {
     constructor(props){
         super(props);
         this.state={
-            ClientList:[],
+            clientList:[],
             selectedClient:'',
             fundList:[],
             filteredFundList:[],
@@ -33,7 +33,7 @@ export default class MainPage extends Component {
         fetch('api/Clients')
             .then(Response=>Response.json())
             .then(Data=>this.setState({
-                ClientList:Data
+                clientList:Data
             }))
             .catch(err => console.log(err));
         fetch('api/Funds')
@@ -98,18 +98,18 @@ export default class MainPage extends Component {
                         { 
                         menuItem: 'Fund Statistics',
                         render: () => <Tab.Pane>
-                                            <FundStatistics ClientList={this.state.ClientList} FundList={this.state.fundList} TimeLine={this.state.selectedTimeline}/>
+                                            <FundStatistics ClientList={this.state.clientList} FundList={this.state.filteredFundList} TimeLine={this.state.selectedTimeline}/>
                                         </Tab.Pane> 
                         },
                         { 
                         menuItem: 'Performance Statistics',
                         render: () => <Tab.Pane>
-                                        <PerformanceStatistics ClientList={this.state.ClientList} FundList={this.state.fundList} TimeLine={this.state.selectedTimeline}/>
+                                        <PerformanceStatistics ClientList={this.state.clientList} FundList={this.state.filteredFundList} TimeLine={this.state.selectedTimeline}/>
                                     </Tab.Pane> 
                         }
             ];
         
-        this.state.ClientList.forEach(data => {
+        this.state.clientList.forEach(data => {
             Clientoptions.push({
                 key:data.clientId,
                 text:data.clientName,
@@ -125,7 +125,7 @@ export default class MainPage extends Component {
             });
         });
 
-        if(this.state.ClientList.length === 0 || this.state.FundList){
+        if(this.state.clientList.length === 0 || this.state.fundList.length === 0){
             return (
                 <Dimmer active inverted>
                     <Loader inverted size="massive">Loading</Loader>
@@ -149,8 +149,7 @@ export default class MainPage extends Component {
                                 options={Clientoptions}
                                 placeholder='Choose Clients'
                                 selection
-                                value={this.state.selectedClient}
-                                
+                                value={this.state.selectedClient}   
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>

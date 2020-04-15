@@ -3,35 +3,56 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import DetailTable from './DetailTable';
 
-
-
-
 export default function PieCharts(props){
   const [showModal, setModal] = useState(false);
+  const [partName, setPartName] = useState('');
 
   let options = {
     chart: {
-      type: 'pie'
+      type: 'pie',
+      style:{
+        fontFamily:'serif'
+      }
     },
     title: {
-      text: props.Options.Title
+      text: props.Options.Title,
+      style:{
+        color:'#000000',
+        fontWeight:'bold'
+    }
     },
-    series: [
-      {
-        cursor: 'pointer',
-        point:{
-          events:{
-              click: (function() {
-                  setModal(!showModal);
-                })
+    plotOptions: {
+      series: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+              enabled: false
+          },
+          showInLegend: true
+        },
+          cursor: 'pointer',
+          point: {
+              events: {
+                  click: function () {
+                      setPartName(this.name);
+                      setModal(!showModal);
+                  }
+              }
           }
-      },
-        data: props.Options.Data
       }
-    ],
+    },
+    series: [{
+        data: props.Options.Data,
+    }],
   };
-  //console.log(props.Options.TimeLine);
-  console.log(showModal);
-
-  return (showModal)?<DetailTable open={true} ChartOptions={props.Options} ChartType="Pie"/>:<HighchartsReact highcharts={Highcharts} options={options} />
+  //console.log(partName);
+  return (showModal) ?
+                        <DetailTable 
+                                    open={true} 
+                                    ChartOptions={props.Options} 
+                                    ChartType="Pie"
+                        />
+                        :
+                        <HighchartsReact highcharts={Highcharts} options={options} />
 }

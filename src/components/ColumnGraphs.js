@@ -6,22 +6,52 @@ import DetailTable from './DetailTable';
 
 export default function ColumnGraphs(props) {
     const [showModal, setModal] = useState(false);
+    const [xAxisPoint, setXAxisPoint] = useState('');
 
     let options = {
         chart: {
-            type: 'column'
+            type: 'column',
+            style:{
+                fontFamily:'serif'
+            }
         },
         title: {
-            text: props.Options.Title
+            text: props.Options.Title,
+            style:{
+                color:'#000000',
+                fontWeight:'bold'
+            }
         },
         xAxis: {
-            categories: props.Options.Categories,
+            title:{
+                text:props.Options.XAxisTitle,
+                style:{
+                    fontWeight: 'bold',
+                    color: '#000000'
+                }
+            },
+            categories: props.Options.XAxisLabel,
             crosshair: true,
+            labels: {
+                style: {
+                    color: '#000000'
+                }
+            }
         },
         yAxis: {
             min: 0,
             title: {
-                text: props.Options.YAxisTitle
+                text: props.Options.YAxisTitle,
+                style:{
+                    fontWeight: 'bold',
+                    color: '#000000'
+                }
+            },
+            tickInterval: props.Options.YAxisTickInterval,
+            labels: {
+                style: {
+                    color: '#000000'
+                }
             }
         },
 
@@ -37,23 +67,33 @@ export default function ColumnGraphs(props) {
             column: {
                 pointPadding: 0.2,
                 borderWidth: 0
+            },
+            series:{
+                cursor: 'pointer',
+                point:{
+                        events:{
+                            click: function(){
+                                setXAxisPoint(this.category);
+                                setModal(!showModal);
+                            }
+                        }
+                }
             }
         },
         series: [{
-            name: props.Options.XAxisTitle,
-            point:{
-                events:{
-                    click: (function() {
-                        setModal(!showModal);
-                      })
-                }
-            },
+            showInLegend:false,
             data: props.Options.Data,
             color: props.Options.Color
-    
         }]
-    }      
-    console.log(props.Options.TimeLine);
-    return (showModal)?<DetailTable open={true} ChartOptions={props.Options} ChartType="Column"/>:<HighchartsReact highcharts={Highcharts} options={options} />
+    }
+    //console.log(xAxisPoint);      
+    return (showModal) ? 
+                        <DetailTable 
+                                    open={true} 
+                                    ChartOptions={props.Options} 
+                                    ChartType="Column"
+                        />
+                        :
+                        <HighchartsReact highcharts={Highcharts} options={options} />
     }
 

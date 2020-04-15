@@ -5,21 +5,52 @@ import DetailTable from './DetailTable';
 
 export default function LineGraphs(props) {
     const [showModal, setModal] = useState(false);
-
+    const [xAxisPoint, setXAxisPoint] = useState('');
     const options = {
+        chart:{
+            type:'line',
+            style:{
+                fontFamily:'serif'
+            }
+        },
         title: {
-            text: props.Options.Title
+            text: props.Options.Title,
+            style:{
+                color:'#000000',
+                fontWeight:'bold'
+            }
         },
     
         yAxis: {
             title: {
-                text: props.Options.YAxisTitle
-            }
+                text: props.Options.YAxisTitle,
+                style:{
+                    fontWeight: 'bold',
+                    color: '#000000'
+                }
+            },
+            labels: {
+                style: {
+                    color: '#000000'
+                }
+            },
+            tickInterval:props.Options.YAxisTickInterval
         },
     
         xAxis: {
-            accessibility: {
-                rangeDescription: 'Range: 2010 to 2017'
+            title:{
+                text:props.Options.XAxisTitle,
+                style:{
+                    fontWeight: 'bold',
+                    color: '#000000'
+                }
+            },
+            categories:props.Options.XAxisLabel,
+            tickInterval:props.Options.XAxisTickInterval,
+            labels: {
+                style: {
+                    color: '#000000'
+                }
             }
         },
     
@@ -34,21 +65,22 @@ export default function LineGraphs(props) {
                 label: {
                     connectorAllowed: false
                 },
-                pointStart: 2010
+                cursor: 'pointer',
+                point:{
+                        events:{
+                            click: function(){
+                                setXAxisPoint(this.category);
+                                setModal(!showModal);
+                            }
+                        }
+                }
             }
         },
-    
+
         series: [{
             name: props.Options.YAxisTitle,
             data: props.Options.Data,
             color: props.Options.Color,
-            point:{
-                events:{
-                    click: (function() {
-                        setModal(!showModal);
-                      })
-                }
-            }
         }],
     
         responsive: {
@@ -65,7 +97,14 @@ export default function LineGraphs(props) {
                 }
             }]
         }
-    
     };
-    return (showModal)?<DetailTable open={true} ChartOptions={props.Options} ChartType="Line"/>:<HighchartsReact highcharts={Highcharts} options={options} />
+    //console.log(xAxisPoint);
+    return (showModal) ? 
+                        <DetailTable 
+                                    open={true} 
+                                    ChartOptions={props.Options} 
+                                    ChartType="Line" 
+                        />
+                        :
+                        <HighchartsReact highcharts={Highcharts} options={options} />
 }
