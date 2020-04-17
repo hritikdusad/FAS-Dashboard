@@ -98,7 +98,7 @@ export default function LineGraphs(props) {
             }]
         }
     };
-    //console.log(xAxisPoint);
+    console.log(xAxisPoint);
     return (showModal) ? 
                         <DetailTable 
                                     open={true} 

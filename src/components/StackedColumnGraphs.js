@@ -111,7 +111,7 @@ export default function StackedColumnGraphs(props) {
         }]
     };
 
-    //console.log(xAxisPoint);
+    console.log(xAxisPoint);
     return (showModal) ?
                         <DetailTable 
                                     open={true}

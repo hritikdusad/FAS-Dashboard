@@ -83,10 +83,11 @@ export default function ColumnGraphs(props) {
         series: [{
             showInLegend:false,
             data: props.Options.Data,
-            color: props.Options.Color
+            color: props.Options.Color,
+            name: props.Options.YAxisTitle
         }]
     }
-    //console.log(xAxisPoint);      
+    console.log(xAxisPoint);      
     return (showModal) ? 
                         <DetailTable 
                                     open={true} 

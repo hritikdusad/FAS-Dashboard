@@ -19,7 +19,7 @@ export default function PieCharts(props){
       style:{
         color:'#000000',
         fontWeight:'bold'
-    }
+      }
     },
     plotOptions: {
       series: {
@@ -42,16 +42,31 @@ export default function PieCharts(props){
           }
       }
     },
+    tooltip:{
+      useHTML:true,
+      formatter() {
+        let point = this.point;
+        return `
+            <section>
+                <span>${point.y} </span>
+                <span>${point.name}</span>
+            </section>
+        `;
+    }
+    },
     series: [{
         data: props.Options.Data,
     }],
   };
-  //console.log(partName);
+  console.log(partName);
   return (showModal) ?
                         <DetailTable 
                                     open={true} 
                                     ChartOptions={props.Options} 
                                     ChartType="Pie"
+                                    PartName={partName}
+                                    Data={props.Data}
+                                    Table={props.Table}
                         />
                         :
                         <HighchartsReact highcharts={Highcharts} options={options} />

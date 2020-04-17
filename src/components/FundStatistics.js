@@ -4,26 +4,28 @@ import { Grid } from 'semantic-ui-react';
 import PieCharts from './PieCharts';
 import StackedColumnGraphs from './StackedColumnGraphs';
 
-const MonthMap = [[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0]];
 
 export default function FundStatistics(props) {
-    let Funds = props.FundList, Clients = props.ClientList;
+    let Funds = props.FundList, Clients = props.ClientList,XAxisTitle,Timeline = props.TimeLine;
     let ActiveFunds=0,InActiveFunds=0,ActiveClients=0,InActiveClients=0;
     let ActiveInActiveFundsOptions ={}, ActiveInActiveClientsOptions = {}, TotalNumberOfActiveFundsOptions={}, NewClosedFundsOptions={};
     let XAxisLabel = [], TotalActiveFunds = [], newFunds = [], closedFunds = [];
-    let Timeline = props.TimeLine;
-    let XAxisTitle;
 
+    /* Condition For Labeling X Axis of the Graphs */
         if(Timeline === "" || Timeline === "Yearly"){
             XAxisTitle = "Year";
-        }else if(Timeline === "Weekly"){
+        }
+        else if(Timeline === "Weekly"){
             XAxisTitle = "Weeks";
-        }else if(Timeline === "Monthly"){
+        }
+        else if(Timeline === "Monthly"){
             XAxisTitle = "Months";
-        }else{
+        }
+        else{
             XAxisTitle = "Days";
         }
 
+    /* Active InActive Funds Calculation */
     Funds.map(fund=>{
         if(parseInt(fund.isActive)===1){
             ActiveFunds++;
@@ -34,6 +36,7 @@ export default function FundStatistics(props) {
         return '';
     });
 
+    /*Active Inactive Client Calculation*/
     Clients.map(client=>{
         if(parseInt(client.isActive)===1){
             ActiveClients++;
@@ -44,71 +47,104 @@ export default function FundStatistics(props) {
         return '';
     }); 
 
+    /* When Selected Timeline is Defult/Year */
+
     if(XAxisTitle === "Year"){
-        let ActiveFundmap = new Map();
+        let ActiveFundmap = {};
         Funds.map(fund=>{
+            let year = parseInt(fund.startDateOnFAS.substring(0,4));
+                if(ActiveFundmap[year]===undefined){
+                    ActiveFundmap[year]=1;
+                }
             if(parseInt(fund.isActive)===1){
-                let year = parseInt(fund.startDateOnFAS.substring(0,4));
-                if(ActiveFundmap.get(year)===undefined){
-                    ActiveFundmap.set(year,1);
-                }
-                else{
-                    ActiveFundmap.set(year,ActiveFundmap.get(year)+1);
-                }
+                    ActiveFundmap[year]=ActiveFundmap[year]+1;
             }
             return '';
         });
     
-        ActiveFundmap.forEach((value,key) => {
+        for(const key in ActiveFundmap){
             XAxisLabel.push(key);
-            TotalActiveFunds.push(value);
-            newFunds.push(value);
-        });
-
+            TotalActiveFunds.push(ActiveFundmap[key]);
+            newFunds.push(ActiveFundmap[key]);
+        }
+        let closedFundmap = {};
         Funds.map(fund=>{
-            let closedFundmap = new Map();
+            let year = parseInt(fund.startDateOnFAS.substring(0,4));
+                if(closedFundmap[year]===undefined){
+                    closedFundmap[year]=1;
+                }
             if(parseInt(fund.isActive)===0){
-                let year = parseInt(fund.startDateOnFAS.substring(0,4));
-                if(closedFundmap.get(year)===undefined){
-                    closedFundmap.set(year,1);
-                }
-                else{
-                    closedFundmap.set(year,closedFundmap.get(year)+1);
-                }
+                    closedFundmap[year]=closedFundmap[year]+1;
             }
+            return '';
         });
-
-        ActiveFundmap.forEach((value,key) => {
-            closedFunds.push(value);
-        });
+        for(const key in closedFundmap){
+            closedFunds.push(closedFundmap[key]);
+        }
     }
+    
+    /* When Selected Timeline is Months (Data collected for current year)*/ 
     else if(XAxisTitle === "Months"){
-        let monthsmap = new Map(MonthMap);
-        let monthsmap2 = new Map(MonthMap);
+        let newmonthsmap = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0};
+        let closedmonthsmap2 = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0};
         let currentYear = new Date().getFullYear();
         Funds.map(fund=>{
             if(parseInt(fund.startDateOnFAS.substring(0,4)) === currentYear){
+                let Month = parseInt(fund.startDateOnFAS.substring(5,7));
                 if(parseInt(fund.isActive)===1){
-                    let Month = parseInt(fund.startDateOnFAS.substring(5,7));
-                    monthsmap.set(Month,monthsmap.get(Month)+1);
+                    newmonthsmap[Month] = newmonthsmap[Month]+1;
                 }
                 else if(parseInt(fund.isActive)===0){
-                    let Month = parseInt(fund.startDateOnFAS.substring(5,7));
-                    monthsmap2.set(Month,monthsmap2.get(Month)+1);
+                    closedmonthsmap2[Month] = closedmonthsmap2[Month]+1;
                 }
-            }
+            } 
             return '';
         });
-        monthsmap.forEach((value,key) => {
-            TotalActiveFunds.push(value);
-            newFunds.push(value);
-        });
-        monthsmap2.forEach((value,key) => {
-            closedFunds.push(value);
-        });
+        for(const key in newmonthsmap){
+            TotalActiveFunds.push(newmonthsmap[key]);
+            newFunds.push(newmonthsmap[key]);
+        }
+        
+        for(const key in closedmonthsmap2){
+            closedFunds.push(closedmonthsmap2[key]);
+        }
         XAxisLabel = ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'];
     }
-    
+
+    // else if(XAxisTitle === "Weeks"){
+    //     XAxisLabel = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    // }
+
+    else if(XAxisTitle ==="Days"){
+        let days = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+        let newmonthsmap ={}, closedmonthsmap2 = {};
+        for(let i=1;i<=days;i++){
+            let s = "Day "+i;
+            XAxisLabel.push(s);
+            closedmonthsmap2[i] = 0;
+            newmonthsmap[i] = 0; 
+        }
+        Funds.forEach(element => {
+            if(parseInt(element.startDateOnFAS.substring(5,7)) === new Date().getMonth()){
+                let day = parseInt(element.startDateOnFAS.substring(8,10));
+                if(element.isActive === 1){
+                    newmonthsmap[day] += 1;
+                }
+                else{
+                    closedmonthsmap2[day] += 1;
+                }
+            }
+        });
+        for(const key in newmonthsmap){
+            TotalActiveFunds.push(newmonthsmap[key]);
+            newFunds.push(newmonthsmap[key]);
+        }
+        
+        for(const key in closedmonthsmap2){
+            closedFunds.push(closedmonthsmap2[key]);
+        }
+    }
+
     ActiveInActiveFundsOptions = {
         Title: "Active/InActive Funds",
         Data:[
@@ -178,21 +214,31 @@ export default function FundStatistics(props) {
 
     return (
         <>
-            <Grid>
-                <Grid.Row>
+            <Grid stackable>
+                <Grid.Row columns={2}>
                     <Grid.Column width={8}>
-                        <PieCharts Options={ActiveInActiveFundsOptions}/>
+                        <PieCharts 
+                                    Options={ActiveInActiveFundsOptions}
+                                    Data={Funds}
+                                    Table="Funds"
+                        />
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        <PieCharts Options={ActiveInActiveClientsOptions} />
+                        <PieCharts 
+                                    Options={ActiveInActiveClientsOptions}
+                        />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
+                <Grid.Row columns={2}>
                     <Grid.Column floated="left" width={7}>
-                        <ColumnGraphs Options={TotalNumberOfActiveFundsOptions}/>
+                        <ColumnGraphs 
+                                        Options={TotalNumberOfActiveFundsOptions}
+                        />
                     </Grid.Column>
                     <Grid.Column floated="right" width={7}>
-                        <StackedColumnGraphs Options={NewClosedFundsOptions}/>
+                        <StackedColumnGraphs 
+                                                Options={NewClosedFundsOptions}
+                        />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

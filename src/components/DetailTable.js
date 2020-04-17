@@ -11,7 +11,8 @@ export default class DetailTable extends Component {
     constructor(props){
         super(props);
         this.state={
-            isModalOpen: this.props.open
+            isModalOpen: this.props.open,
+            FundList:[]
         }
         this.handleClose = this.handleClose.bind(this);
     }
@@ -22,6 +23,13 @@ export default class DetailTable extends Component {
         });
     }
 
+    componentDidMount(){
+      fetch('api/funds')
+          .then(Response=>Response.json())
+          .then((Data)=>this.setState({
+              FundList: Data
+          }));
+    }
     render() {
 
       if(this.state.isModalOpen === false){
@@ -38,15 +46,31 @@ export default class DetailTable extends Component {
             return <LineGraphs Options={this.props.ChartOptions} />
           }
       }
+
       let TableData = (
+        <>
+        <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>ID</Table.HeaderCell>
+                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Start Date On FAS</Table.HeaderCell>
+                        <Table.HeaderCell>Creation Date On FAS</Table.HeaderCell>
+                      </Table.Row>
+                </Table.Header>
         <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>1</Table.Cell>
-                          <Table.Cell>fund</Table.Cell>
-                          <Table.Cell>20-09-2020</Table.Cell>
-                          <Table.Cell>209-28-8562</Table.Cell>
-                        </Table.Row>
+                        {this.state.FundList.map((element)=>{
+                          
+                            return (
+                              <Table.Row>
+                                <Table.Cell>{element.fundId}</Table.Cell>
+                                <Table.Cell>{element.fundName}</Table.Cell>
+                                <Table.Cell>{element.startDateOnFAS}</Table.Cell>
+                                <Table.Cell>{element.createdOnFAS}</Table.Cell>
+                              </Table.Row>
+                            );
+                          })}
         </Table.Body>
+        </>
     );
       
             
@@ -59,14 +83,6 @@ export default class DetailTable extends Component {
             <Modal.Content image scrolling>
               <Modal.Description>
                   <Table celled>
-                  <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>ID</Table.HeaderCell>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Start Date On FAS</Table.HeaderCell>
-                        <Table.HeaderCell>Creation Date On FAS</Table.HeaderCell>
-                      </Table.Row>
-                </Table.Header>
                     {TableData}
                   </Table>
               </Modal.Description>
