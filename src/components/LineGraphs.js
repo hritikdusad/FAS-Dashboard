@@ -65,6 +65,7 @@ export default function LineGraphs(props) {
                 label: {
                     connectorAllowed: false
                 },
+                shadow:true,
                 cursor: 'pointer',
                 point:{
                         events:{
@@ -77,11 +78,7 @@ export default function LineGraphs(props) {
             }
         },
 
-        series: [{
-            name: props.Options.YAxisTitle,
-            data: props.Options.Data,
-            color: props.Options.Color,
-        }],
+        series: props.Options.Data,
     
         responsive: {
             rules: [{

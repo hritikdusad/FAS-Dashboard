@@ -17,21 +17,14 @@ export default class DetailTable extends Component {
         this.handleClose = this.handleClose.bind(this);
     }
 
+    
     handleClose(){
         this.setState({
             isModalOpen:false
         });
     }
 
-    componentDidMount(){
-      fetch('api/funds')
-          .then(Response=>Response.json())
-          .then((Data)=>this.setState({
-              FundList: Data
-          }));
-    }
     render() {
-
       if(this.state.isModalOpen === false){
           if(this.props.ChartType === "Pie"){
             return <PieCharts Options={this.props.ChartOptions} />
@@ -46,7 +39,7 @@ export default class DetailTable extends Component {
             return <LineGraphs Options={this.props.ChartOptions} />
           }
       }
-
+     // let state = (this.props.PartName === "Active")?1:0;
       let TableData = (
         <>
         <Table.Header>
@@ -58,8 +51,8 @@ export default class DetailTable extends Component {
                       </Table.Row>
                 </Table.Header>
         <Table.Body>
-                        {this.state.FundList.map((element)=>{
-                          
+                        {/* {this.state.FundList.map((element)=>{
+                          if(element.isActive === state)
                             return (
                               <Table.Row>
                                 <Table.Cell>{element.fundId}</Table.Cell>
@@ -68,7 +61,9 @@ export default class DetailTable extends Component {
                                 <Table.Cell>{element.createdOnFAS}</Table.Cell>
                               </Table.Row>
                             );
-                          })}
+
+                            return '';
+                          })} */}
         </Table.Body>
         </>
     );

@@ -185,7 +185,7 @@ export default class MainPage extends Component {
                 <Grid stackable>
                     <Grid.Row>
                         <Grid.Column>
-                            <Segment inverted>
+                        <Segment inverted>
                                 <Header
                                         as='h1' 
                                         textAlign='center' 
@@ -233,11 +233,11 @@ export default class MainPage extends Component {
                         </Grid.Column>     
                     </Grid.Row>
                 </Grid>
-                <Tab
-                        menu={{ color: 'blue', attached: false, tabular: false }}
-                        panes={Tabs}
-                    >
-                </Tab>
+                    <Tab
+                            menu={{ color: 'blue', attached: false, tabular: false }}
+                            panes={Tabs}
+                        >
+                    </Tab>
             </Container>
 
             

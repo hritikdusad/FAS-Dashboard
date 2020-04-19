@@ -1,14 +1,15 @@
 import React from 'react';
 import ColumnGraphs from './ColumnGraphs';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Segment } from 'semantic-ui-react';
 import PieCharts from './PieCharts';
 import StackedColumnGraphs from './StackedColumnGraphs';
+import LineGraphs from './LineGraphs';
 
 
 export default function FundStatistics(props) {
     let Funds = props.FundList, Clients = props.ClientList,XAxisTitle,Timeline = props.TimeLine;
-    let ActiveFunds=0,InActiveFunds=0,ActiveClients=0,InActiveClients=0;
-    let ActiveInActiveFundsOptions ={}, ActiveInActiveClientsOptions = {}, TotalNumberOfActiveFundsOptions={}, NewClosedFundsOptions={};
+    let ActiveFunds=0,InActiveFunds=0,ActiveClients=0,InActiveClients=0,YearlyRenewalFunds=0,QuarterlyRenewalFunds=0,MonthlyRenewalFunds=0,WeeklyRenewalFunds=0;
+    let ActiveInActiveFundsOptions ={}, ActiveInActiveClientsOptions = {}, TotalNumberOfActiveFundsOptions={}, NewClosedFundsOptions={}, PeriodWiseFundsOptions={}, YearWiseFundTypesOptions={};
     let XAxisLabel = [], TotalActiveFunds = [], newFunds = [], closedFunds = [];
 
     /* Condition For Labeling X Axis of the Graphs */
@@ -46,6 +47,25 @@ export default function FundStatistics(props) {
         }
         return '';
     }); 
+
+    /* PeriodWise Funds*/
+
+    Funds.map(fund=>{
+        if(fund.renewalPeriod === "Yearly"){
+            YearlyRenewalFunds++;
+        }
+        else if(fund.renewalPeriod === "Quarterly"){
+            QuarterlyRenewalFunds++;
+        }
+        else if(fund.renewalPeriod === "Monthly"){
+            MonthlyRenewalFunds++;
+        }
+        else if(fund.renewalPeriod === "Weekly"){
+            WeeklyRenewalFunds++;
+        }
+        return '';
+    })
+
 
     /* When Selected Timeline is Defult/Year */
 
@@ -145,18 +165,71 @@ export default function FundStatistics(props) {
         }
     }
 
+
+    /* Year Wise Fund Types */
+    let MasterFeederData=[],CapitalCallData=[],RegularData=[],ModalData=[],XAxisLabelYearWiseFunds=[];
+    let MasterFeederDataMap={},CapitalCallDataMap={},RegularDataMap={},ModalDataMap={};
+
+    Funds.map((fund)=>{
+        let year = parseInt(fund.startDateOnFAS.substring(0,4));
+        if(MasterFeederDataMap[year]===undefined){
+            MasterFeederDataMap[year]=0;
+        }
+        if(CapitalCallDataMap[year]===undefined){
+            CapitalCallDataMap[year]=0;
+        }
+        if(RegularDataMap[year]===undefined){
+            RegularDataMap[year]=0;
+        }
+        if(ModalDataMap[year]===undefined){
+            ModalDataMap[year]=0;
+        }
+
+        if(fund.fundType === "MasterFeeder"){
+            MasterFeederDataMap[year] +=1; 
+        }
+        else if(fund.fundType === "CapitalCall"){
+            CapitalCallDataMap[year]+=1;
+        }
+        else if(fund.fundType === "Regular"){
+            RegularDataMap[year]+=1;
+        }
+        else if(fund.fundType === "Modal"){
+            ModalDataMap[year]+=1;
+        }
+        return '';
+    });
+
+    for(const key in MasterFeederDataMap){
+        XAxisLabelYearWiseFunds.push(key);
+        MasterFeederData.push(MasterFeederDataMap[key]);
+    }
+
+    for(const key in CapitalCallDataMap){
+        CapitalCallData.push(CapitalCallDataMap[key]);
+    }
+
+    for(const key in RegularDataMap){
+       RegularData.push(RegularDataMap[key]);
+    }
+
+    for(const key in ModalDataMap){
+        ModalData.push(ModalDataMap[key]);
+    }
+
+
     ActiveInActiveFundsOptions = {
         Title: "Active/InActive Funds",
         Data:[
             {
                 y:ActiveFunds,
                 name: "Active",
-                color:"#0d56f2"
+                color:"#7d00a3"
             },
             {
                 y:InActiveFunds,
                 name:"InActive",
-                color:"#68869b"
+                color:"#ed2578"
             }
         ],
         Header:"Fund Details",
@@ -169,19 +242,80 @@ export default function FundStatistics(props) {
             {
                 y:ActiveClients,
                 name: "Active",
-                color:  "#002060"
+                color:  "#ed2578"
 
             },
             {
                 y:InActiveClients,
                 name:"InActive",
-                color:  "#FF0000"
+                color:  "#f96731"
             }
         ],
         Header:"Client Details",
         TimeLine:Timeline
     };
 
+    PeriodWiseFundsOptions={
+        Title: "Period Wise Funds",
+        Data:[
+            {
+                y:YearlyRenewalFunds,
+                name: "Yearly",
+                color:  "#7d00a3"
+
+            },
+            {
+                y:QuarterlyRenewalFunds,
+                name:"Quarterly",
+                color:  "#ed2578"
+            },
+            {
+                y:MonthlyRenewalFunds,
+                name:"Monthly",
+                color:  "#f20000"
+            },
+            {
+                y:WeeklyRenewalFunds,
+                name:"Weekly",
+                color:  "#f96731"
+            }
+        ],
+        Header:"Period Wise Fund Details",
+        TimeLine:Timeline
+    };
+
+    YearWiseFundTypesOptions={
+        Title: "Year Wise Fund Types",
+        YAxisTitle: "Number Of Funds",
+        YAxisTickInterval:1,
+        XAxisTitle: "Year",
+        XAxisLabel:XAxisLabelYearWiseFunds,
+        XAxisTickInterval:1,
+        Data:[
+            {
+                name:"Master Feeder",
+                data:MasterFeederData,
+                color:"#420084"
+            },
+            {
+                name:"Capital Call",
+                data:CapitalCallData,
+                color:"#9612a0"
+            },
+            {
+                name:"Regular Call",
+                data:RegularData,
+                color:"#f1844b"
+            },
+            {
+                name:"Modal Call",
+                data:ModalData,
+                color:"#fad622"
+            },
+        ],
+        Header:"Fund Types Details",
+        TimeLine: Timeline
+    }
 
     TotalNumberOfActiveFundsOptions={
         Title:"Total Active Funds",
@@ -190,7 +324,7 @@ export default function FundStatistics(props) {
         YAxisTitle: "Number Of Funds",
         YAxisTickInterval: 1,
         Data:TotalActiveFunds,
-        Color:"#A301C8",
+        Color:"#420084",
         Header:"Active Fund Details",
         TimeLine: Timeline
     };
@@ -204,41 +338,61 @@ export default function FundStatistics(props) {
         YAxisTickInterval:1,
         UpperStackName:"New Funds",
         UpperStackData:newFunds,
-        UpperStackColor:"#003464",
+        UpperStackColor:"#0FACF3",
         LowerStackName:"Closed Funds",
         LowerStackData:closedFunds,
-        LowerStackColor:"#FDFF00",
+        LowerStackColor:"#420084",
         Header:"New/Closed Fund Details",
         TimeLine:Timeline
     };
-
     return (
         <>
             <Grid stackable>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={8}>
-                        <PieCharts 
-                                    Options={ActiveInActiveFundsOptions}
-                                    Data={Funds}
-                                    Table="Funds"
-                        />
+                <Grid.Row columns={4}>
+                    <Grid.Column width={3}>
+                        <Segment>
+                            <PieCharts 
+                                        Options={ActiveInActiveFundsOptions}
+                                        Data={props.FundList}
+                            />
+                        </Segment>
                     </Grid.Column>
-                    <Grid.Column width={8}>
-                        <PieCharts 
-                                    Options={ActiveInActiveClientsOptions}
-                        />
+                    <Grid.Column width={3}>
+                        <Segment>
+                            <PieCharts 
+                                        Options={ActiveInActiveClientsOptions}
+                            />
+                        </Segment>
+                    </Grid.Column>
+                    <Grid.Column width={3}>
+                        <Segment>
+                            <PieCharts 
+                                        Options={PeriodWiseFundsOptions}
+                            />
+                        </Segment>
+                    </Grid.Column>
+                    <Grid.Column width={7}>
+                        <Segment>
+                            <LineGraphs
+                                        Options={YearWiseFundTypesOptions}
+                            />
+                        </Segment>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={2}>
                     <Grid.Column floated="left" width={7}>
-                        <ColumnGraphs 
-                                        Options={TotalNumberOfActiveFundsOptions}
-                        />
+                        <Segment>
+                            <ColumnGraphs 
+                                            Options={TotalNumberOfActiveFundsOptions}
+                            />
+                        </Segment>
                     </Grid.Column>
                     <Grid.Column floated="right" width={7}>
-                        <StackedColumnGraphs 
-                                                Options={NewClosedFundsOptions}
-                        />
+                        <Segment>
+                            <StackedColumnGraphs 
+                                                    Options={NewClosedFundsOptions}
+                            />
+                        </Segment>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

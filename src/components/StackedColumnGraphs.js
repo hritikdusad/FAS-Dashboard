@@ -7,6 +7,7 @@ import DetailTable from './DetailTable';
 export default function StackedColumnGraphs(props) {
     const [showModal, setModal] = useState(false);
     const [xAxisPoint, setXAxisPoint] = useState('');
+    const [partName, setPartName] = useState('');
 
     let options = {
         chart: {
@@ -93,6 +94,7 @@ export default function StackedColumnGraphs(props) {
                         events:{
                             click: function(){
                                 setXAxisPoint(this.category);
+                                setPartName(this.series.name);
                                 setModal(!showModal);
                             }
                         }
@@ -112,6 +114,7 @@ export default function StackedColumnGraphs(props) {
     };
 
     console.log(xAxisPoint);
+    console.log(partName);
     return (showModal) ?
                         <DetailTable 
                                     open={true}

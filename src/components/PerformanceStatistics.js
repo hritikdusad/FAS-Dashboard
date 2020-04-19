@@ -1,6 +1,7 @@
 import React from 'react';
 import LineGraphs from './LineGraphs';
 import ColumnGraphs from './ColumnGraphs';
+import { Grid, Segment } from 'semantic-ui-react';
 
 
 export default function PerformanceStatistics(props) {
@@ -186,7 +187,7 @@ export default function PerformanceStatistics(props) {
         YAxisTitle: "Average Fund Performance Time(sec)",
         YAxisTickInterval: 1,
         Data:AverageFundPerformanceTime,
-        Color: "#004185",
+        Color: "#420084",
         Header:"Fund Performance Details",
         TimeLine: Timeline
     };
@@ -194,25 +195,38 @@ export default function PerformanceStatistics(props) {
 
     SignOffDetailsOptions={
         Title: "Sign-Off Details",
-        YAxisTitle: "Delay",
+        YAxisTitle: "Delay (In Days)",
         YAxisTickInterval:1,
         XAxisTitle: XAxisTitle,
         XAxisLabel:XAxisLabel,
         XAxisTickInterval:1,
-        Data:[4, 5, 5, 6, 9, 11, 13, 15, 1, 2, 3, 4,12,10,9,15,8,7,6,5,4,3,2,1,0,0,0,5,2,3,4],
-        Color:"red",
+        Data:[{
+            name:"Delay",
+            data:[4, 5, 5, 6, 9, 11, 13, 15],
+            color:"#f20000"
+        }],
+        
         Header:"Delay Details",
         TimeLine: Timeline
     };
     return (
-        <>
-                    <ColumnGraphs 
-                                Options={FundPerformanceOptions}
-                    />
-                    <LineGraphs 
-                                Options={SignOffDetailsOptions}
-                    />
-        </>
-                
+        <Grid stackable>
+            <Grid.Row columns={2}>
+                <Grid.Column width={7} floated="left">
+                    <Segment>
+                        <ColumnGraphs 
+                                        Options={FundPerformanceOptions}
+                        />
+                    </Segment>
+                </Grid.Column>
+                <Grid.Column width={7} floated="right">
+                    <Segment>
+                        <LineGraphs 
+                                    Options={SignOffDetailsOptions}
+                        />
+                    </Segment>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>                
     )
 }

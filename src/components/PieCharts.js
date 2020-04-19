@@ -59,14 +59,14 @@ export default function PieCharts(props){
     }],
   };
   console.log(partName);
+ 
+
   return (showModal) ?
                         <DetailTable 
                                     open={true} 
                                     ChartOptions={props.Options} 
                                     ChartType="Pie"
                                     PartName={partName}
-                                    Data={props.Data}
-                                    Table={props.Table}
                         />
                         :
                         <HighchartsReact highcharts={Highcharts} options={options} />
