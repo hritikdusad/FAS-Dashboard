@@ -6,6 +6,7 @@ import DetailTable from './DetailTable';
 export default function PieCharts(props){
   const [showModal, setModal] = useState(false);
   const [partName, setPartName] = useState('');
+  const [XAxisPoint] = useState(0);
 
   let options = {
     chart: {
@@ -58,8 +59,7 @@ export default function PieCharts(props){
         data: props.Options.Data,
     }],
   };
-  console.log(partName);
- 
+
 
   return (showModal) ?
                         <DetailTable 
@@ -67,6 +67,7 @@ export default function PieCharts(props){
                                     ChartOptions={props.Options} 
                                     ChartType="Pie"
                                     PartName={partName}
+                                    XAxisPoint={XAxisPoint}
                         />
                         :
                         <HighchartsReact highcharts={Highcharts} options={options} />

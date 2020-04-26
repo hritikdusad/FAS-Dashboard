@@ -6,6 +6,8 @@ import DetailTable from './DetailTable';
 export default function LineGraphs(props) {
     const [showModal, setModal] = useState(false);
     const [xAxisPoint, setXAxisPoint] = useState('');
+    const [partName, setPartName] = useState('');
+
     const options = {
         chart:{
             type:'line',
@@ -71,6 +73,7 @@ export default function LineGraphs(props) {
                         events:{
                             click: function(){
                                 setXAxisPoint(this.category);
+                                setPartName(this.series.name);
                                 setModal(!showModal);
                             }
                         }
@@ -95,12 +98,14 @@ export default function LineGraphs(props) {
             }]
         }
     };
-    console.log(xAxisPoint);
+
     return (showModal) ? 
                         <DetailTable 
                                     open={true} 
                                     ChartOptions={props.Options} 
-                                    ChartType="Line" 
+                                    ChartType="Line"
+                                    PartName={partName}
+                                    XAxisPoint={xAxisPoint} 
                         />
                         :
                         <HighchartsReact highcharts={Highcharts} options={options} />

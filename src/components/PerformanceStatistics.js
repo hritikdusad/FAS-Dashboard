@@ -5,7 +5,7 @@ import { Grid, Segment } from 'semantic-ui-react';
 
 
 export default function PerformanceStatistics(props) {
-    let XAxisTitle,Funds = props.FundList, SelectedFundId = props.SelectedFundId,Timeline = props.TimeLine; 
+    let XAxisTitle,Funds = props.FundList, SelectedFundId = props.SelectedFundId,Timeline = props.TimeLine,SignOffDetails = props.SignOffDetails; 
     let AverageFundPerformanceTime = [],XAxisLabel=[];
     let FundPerformanceOptions = {},SignOffDetailsOptions = {};
 
@@ -115,6 +115,84 @@ export default function PerformanceStatistics(props) {
         }
 
         else if(XAxisTitle === "Weeks"){
+            let WeekFundPerformance = {'Week 1':[],'Week 2': [],'Week 3':[],'Week 4':[]}
+            let currentYear = new Date().getFullYear();
+            let PreviousMonth = new Date().getMonth();
+            let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+            if(SelectedFundId === ""){
+                Funds.forEach(element => {
+                    if(parseInt(element.startDateOnFAS.substring(0,4)) === currentYear){
+                        if(parseInt(element.startDateOnFAS.substring(5,7)) === PreviousMonth){
+                            let day = parseInt(element.startDateOnFAS.substring(8,10));
+                            if(day>=1 && day<=7){
+                                WeekFundPerformance['Week 1'].push(element.fundPerformanceTime);
+                            }   
+                            else if(day>=8 && day <=14){
+                                WeekFundPerformance['Week 2'].push(element.fundPerformanceTime);
+                            }
+                            else if(day>=15 && day <=21){
+                                WeekFundPerformance['Week 3'].push(element.fundPerformanceTime);
+                            }
+                            else if(day>=22 && day <=numberOfDays){
+                                WeekFundPerformance['Week 4'].push(element.fundPerformanceTime);
+                            }
+                        }
+                        
+                    }
+                });
+                for(const key in WeekFundPerformance){
+                    let WeekFundPerformancearray = WeekFundPerformance[key];
+                    let sum=0,average;
+                    for(let i=0;i<WeekFundPerformancearray.length;i++){
+                        sum += WeekFundPerformancearray[i];
+                    }
+                    average = sum/WeekFundPerformancearray.length;
+                    if(isNaN(average)){
+                        AverageFundPerformanceTime.push(0);
+                    }
+                    else{
+                        AverageFundPerformanceTime.push(average);
+                    }
+                }
+            }
+            else{
+                Funds.forEach(element => {
+                    if(element.fundId === SelectedFundId){
+                        if(parseInt(element.startDateOnFAS.substring(0,4)) === currentYear){
+                            if(parseInt(element.startDateOnFAS.substring(5,7)) === PreviousMonth){
+                                let day = parseInt(element.startDateOnFAS.substring(8,10));
+                                if(day>=1 && day<=7){
+                                    WeekFundPerformance['Week 1'].push(element.fundPerformanceTime);
+                                }   
+                                else if(day>=8 && day <=14){
+                                    WeekFundPerformance['Week 2'].push(element.fundPerformanceTime);
+                                }
+                                else if(day>=15 && day <=21){
+                                    WeekFundPerformance['Week 3'].push(element.fundPerformanceTime);
+                                }
+                                else if(day>=22 && day <=numberOfDays){
+                                    WeekFundPerformance['Week 4'].push(element.fundPerformanceTime);
+                                }
+                            }
+                            
+                        }
+                    } 
+                });
+                for(const key in WeekFundPerformance){
+                    let WeekFundPerformancearray = WeekFundPerformance[key];
+                    let sum=0,average;
+                    for(let i=0;i<WeekFundPerformancearray.length;i++){
+                        sum += WeekFundPerformancearray[i];
+                    }
+                    average = sum/WeekFundPerformancearray.length;
+                    if(isNaN(average)){
+                        AverageFundPerformanceTime.push(0);
+                    }
+                    else{
+                        AverageFundPerformanceTime.push(average);
+                    }
+                }
+            }
             XAxisLabel = ['Week 1','Week 2','Week 3','Week 4'];
         }
         /*When The Selected Timeline is Daily */
@@ -178,8 +256,6 @@ export default function PerformanceStatistics(props) {
             }
         }
 
-        
-
     FundPerformanceOptions={
         Title:"Fund Performance",
         XAxisTitle: XAxisTitle,
@@ -189,25 +265,42 @@ export default function PerformanceStatistics(props) {
         Data:AverageFundPerformanceTime,
         Color: "#420084",
         Header:"Fund Performance Details",
-        TimeLine: Timeline
+        TimeLine: XAxisTitle,
+        DataList:Funds,
+        selectedFund:SelectedFundId
     };
 
+
+    /* Calculation Of SignOffDetails */
+    let SignOffDetailsTobeExtracted = (SelectedFundId==="")?1:SelectedFundId;
+
+    let XAxixDates = [],Delays=[];
+    SignOffDetails.forEach(element => {
+        if(element.fundId === SignOffDetailsTobeExtracted){
+            XAxixDates.push(element.idealDate.substring(0,10));
+            let actual = new Date(element.actualDate);
+            let ideal = new Date(element.idealDate);
+            let Delaydays = (actual.getTime()-ideal.getTime())/(3600*24*1000);
+            Delays.push(Delaydays);
+        }
+    });
 
     SignOffDetailsOptions={
         Title: "Sign-Off Details",
         YAxisTitle: "Delay (In Days)",
         YAxisTickInterval:1,
-        XAxisTitle: XAxisTitle,
-        XAxisLabel:XAxisLabel,
-        XAxisTickInterval:1,
+        XAxisTitle: "Ideal Sign Off Dates",
+        XAxisLabel:XAxixDates,
         Data:[{
             name:"Delay",
-            data:[4, 5, 5, 6, 9, 11, 13, 15],
+            data:Delays,
             color:"#f20000"
         }],
         
         Header:"Delay Details",
-        TimeLine: Timeline
+        TimeLine: Timeline,
+        DataList:Funds,
+        selectedFund:SignOffDetailsTobeExtracted
     };
     return (
         <Grid stackable>

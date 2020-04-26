@@ -7,11 +7,11 @@ import LineGraphs from './LineGraphs';
 
 
 export default function FundStatistics(props) {
-    let Funds = props.FundList, Clients = props.ClientList,XAxisTitle,Timeline = props.TimeLine;
-    let ActiveFunds=0,InActiveFunds=0,ActiveClients=0,InActiveClients=0,YearlyRenewalFunds=0,QuarterlyRenewalFunds=0,MonthlyRenewalFunds=0,WeeklyRenewalFunds=0;
-    let ActiveInActiveFundsOptions ={}, ActiveInActiveClientsOptions = {}, TotalNumberOfActiveFundsOptions={}, NewClosedFundsOptions={}, PeriodWiseFundsOptions={}, YearWiseFundTypesOptions={};
+    let Funds = props.FundList, XAxisTitle,Timeline = props.TimeLine;
+    let ActiveFunds=0,InActiveFunds=0,YearlyRenewalFunds=0,QuarterlyRenewalFunds=0,MonthlyRenewalFunds=0,WeeklyRenewalFunds=0;
+    let ActiveInActiveFundsOptions ={}, TotalNumberOfActiveFundsOptions={}, NewClosedFundsOptions={}, PeriodWiseFundsOptions={}, YearWiseFundTypesOptions={};
     let XAxisLabel = [], TotalActiveFunds = [], newFunds = [], closedFunds = [];
-
+    //let Clients = props.ClientList,ActiveClients=0,InActiveClients=0, ActiveInActiveClientsOptions = {};
     /* Condition For Labeling X Axis of the Graphs */
         if(Timeline === "" || Timeline === "Yearly"){
             XAxisTitle = "Year";
@@ -38,15 +38,15 @@ export default function FundStatistics(props) {
     });
 
     /*Active Inactive Client Calculation*/
-    Clients.map(client=>{
-        if(parseInt(client.isActive)===1){
-            ActiveClients++;
-        }
-        else{
-            InActiveClients++;
-        }
-        return '';
-    }); 
+    // Clients.map(client=>{
+    //     if(parseInt(client.isActive)===1){
+    //         ActiveClients++;
+    //     }
+    //     else{
+    //         InActiveClients++;
+    //     }
+    //     return '';
+    // }); 
 
     /* PeriodWise Funds*/
 
@@ -74,7 +74,7 @@ export default function FundStatistics(props) {
         Funds.map(fund=>{
             let year = parseInt(fund.startDateOnFAS.substring(0,4));
                 if(ActiveFundmap[year]===undefined){
-                    ActiveFundmap[year]=1;
+                    ActiveFundmap[year]=0;
                 }
             if(parseInt(fund.isActive)===1){
                     ActiveFundmap[year]=ActiveFundmap[year]+1;
@@ -91,7 +91,7 @@ export default function FundStatistics(props) {
         Funds.map(fund=>{
             let year = parseInt(fund.startDateOnFAS.substring(0,4));
                 if(closedFundmap[year]===undefined){
-                    closedFundmap[year]=1;
+                    closedFundmap[year]=0;
                 }
             if(parseInt(fund.isActive)===0){
                     closedFundmap[year]=closedFundmap[year]+1;
@@ -131,9 +131,65 @@ export default function FundStatistics(props) {
         XAxisLabel = ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'];
     }
 
-    // else if(XAxisTitle === "Weeks"){
-    //     XAxisLabel = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
-    // }
+    else if(XAxisTitle === "Weeks"){
+        let newWeekMap = {'Week 1':0,'Week 2':0,'Week 3':0,'Week 4':0}, closedWeekMap ={'Week 1':0,'Week 2':0,'Week 3':0,'Week 4':0};
+        let currentYear = new Date().getFullYear();
+        let PreviousMonth = new Date().getMonth();
+        let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+        Funds.map(fund=>{
+            if(parseInt(fund.startDateOnFAS.substring(0,4)) === currentYear){
+                let Month = parseInt(fund.startDateOnFAS.substring(5,7));
+                if(PreviousMonth === Month){
+                    let day = parseInt(fund.startDateOnFAS.substring(8,10));
+                    if(day>=1 && day<=7){
+                        if(parseInt(fund.isActive)===1){
+                            newWeekMap['Week 1'] = newWeekMap['Week 1']+1;
+                        }
+                        else if(parseInt(fund.isActive)===0){
+                            closedWeekMap['Week 1'] = closedWeekMap['Week 1']+1;
+                        }
+                    }
+                    else if(day>=8 && day <=14){
+                        if(parseInt(fund.isActive)===1){
+                            newWeekMap['Week 2'] = newWeekMap['Week 2']+1;
+                        }
+                        else if(parseInt(fund.isActive)===0){
+                            closedWeekMap['Week 2'] = closedWeekMap['Week 2']+1;
+                        }
+                    }
+                    else if(day>=15 && day <=21){
+                        if(parseInt(fund.isActive)===1){
+                            newWeekMap['Week 3'] = newWeekMap['Week 3']+1;
+                        }
+                        else if(parseInt(fund.isActive)===0){
+                            closedWeekMap['Week 3'] = closedWeekMap['Week 3']+1;
+                        }
+                    }
+                    else if(day>=22 && day <=numberOfDays){
+                        if(parseInt(fund.isActive)===1){
+                            newWeekMap['Week 4'] = newWeekMap['Week 4']+1;
+                        }
+                        else if(parseInt(fund.isActive)===0){
+                            closedWeekMap['Week 4'] = closedWeekMap['Week 4']+1;
+                        }
+                    }
+                }
+                
+            } 
+            return '';
+        });
+
+        for(const key in newWeekMap){
+            TotalActiveFunds.push(newWeekMap[key]);
+            newFunds.push(newWeekMap[key]);
+        }
+        
+        for(const key in closedWeekMap){
+            closedFunds.push(closedWeekMap[key]);
+        }
+
+        XAxisLabel=['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    }
 
     else if(XAxisTitle ==="Days"){
         let days = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
@@ -191,10 +247,10 @@ export default function FundStatistics(props) {
         else if(fund.fundType === "CapitalCall"){
             CapitalCallDataMap[year]+=1;
         }
-        else if(fund.fundType === "Regular"){
+        else if(fund.fundType === "RegularCall"){
             RegularDataMap[year]+=1;
         }
-        else if(fund.fundType === "Modal"){
+        else if(fund.fundType === "ModalCall"){
             ModalDataMap[year]+=1;
         }
         return '';
@@ -233,27 +289,29 @@ export default function FundStatistics(props) {
             }
         ],
         Header:"Fund Details",
-        TimeLine:Timeline
+        TimeLine:'',
+        DataList:Funds,
+        selectedFund:''
     };
 
-    ActiveInActiveClientsOptions = {
-        Title: "Active/InActive Clients",
-        Data:[
-            {
-                y:ActiveClients,
-                name: "Active",
-                color:  "#ed2578"
+    // ActiveInActiveClientsOptions = {
+    //     Title: "Active/InActive Clients",
+    //     Data:[
+    //         {
+    //             y:ActiveClients,
+    //             name: "Active",
+    //             color:  "#ed2578"
 
-            },
-            {
-                y:InActiveClients,
-                name:"InActive",
-                color:  "#f96731"
-            }
-        ],
-        Header:"Client Details",
-        TimeLine:Timeline
-    };
+    //         },
+    //         {
+    //             y:InActiveClients,
+    //             name:"InActive",
+    //             color:  "#f96731"
+    //         }
+    //     ],
+    //     Header:"Client Details",
+    //     TimeLine:Timeline
+    // };
 
     PeriodWiseFundsOptions={
         Title: "Period Wise Funds",
@@ -281,7 +339,9 @@ export default function FundStatistics(props) {
             }
         ],
         Header:"Period Wise Fund Details",
-        TimeLine:Timeline
+        TimeLine:'',
+        DataList:Funds,
+        selectedFund:''
     };
 
     YearWiseFundTypesOptions={
@@ -314,7 +374,9 @@ export default function FundStatistics(props) {
             },
         ],
         Header:"Fund Types Details",
-        TimeLine: Timeline
+        TimeLine:'',
+        DataList:Funds,
+        selectedFund:''
     }
 
     TotalNumberOfActiveFundsOptions={
@@ -326,7 +388,9 @@ export default function FundStatistics(props) {
         Data:TotalActiveFunds,
         Color:"#420084",
         Header:"Active Fund Details",
-        TimeLine: Timeline
+        TimeLine: XAxisTitle,
+        DataList:Funds,
+        selectedFund:''
     };
 
 
@@ -343,28 +407,30 @@ export default function FundStatistics(props) {
         LowerStackData:closedFunds,
         LowerStackColor:"#420084",
         Header:"New/Closed Fund Details",
-        TimeLine:Timeline
+        TimeLine:XAxisTitle,
+        DataList:Funds,
+        selectedFund:''
+
     };
     return (
         <>
             <Grid stackable>
                 <Grid.Row columns={4}>
-                    <Grid.Column width={3}>
+                    <Grid.Column width={4}>
                         <Segment>
                             <PieCharts 
                                         Options={ActiveInActiveFundsOptions}
-                                        Data={props.FundList}
                             />
                         </Segment>
                     </Grid.Column>
-                    <Grid.Column width={3}>
+                    {/* <Grid.Column width={3}>
                         <Segment>
                             <PieCharts 
                                         Options={ActiveInActiveClientsOptions}
                             />
                         </Segment>
-                    </Grid.Column>
-                    <Grid.Column width={3}>
+                    </Grid.Column> */}
+                    <Grid.Column width={4}>
                         <Segment>
                             <PieCharts 
                                         Options={PeriodWiseFundsOptions}

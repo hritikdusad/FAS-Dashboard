@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Modal, Table } from 'semantic-ui-react';
+import { Modal} from 'semantic-ui-react';
 import PieCharts from './PieCharts';
 import ColumnGraphs from './ColumnGraphs';
 import StackedColumnGraphs from './StackedColumnGraphs';
 import LineGraphs from './LineGraphs';
+import TableData from './TableData';
 
 
 
@@ -12,7 +13,7 @@ export default class DetailTable extends Component {
         super(props);
         this.state={
             isModalOpen: this.props.open,
-            FundList:[]
+            DataList:this.props.ChartOptions.DataList
         }
         this.handleClose = this.handleClose.bind(this);
     }
@@ -39,37 +40,7 @@ export default class DetailTable extends Component {
             return <LineGraphs Options={this.props.ChartOptions} />
           }
       }
-     // let state = (this.props.PartName === "Active")?1:0;
-      let TableData = (
-        <>
-        <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>ID</Table.HeaderCell>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Start Date On FAS</Table.HeaderCell>
-                        <Table.HeaderCell>Creation Date On FAS</Table.HeaderCell>
-                      </Table.Row>
-                </Table.Header>
-        <Table.Body>
-                        {/* {this.state.FundList.map((element)=>{
-                          if(element.isActive === state)
-                            return (
-                              <Table.Row>
-                                <Table.Cell>{element.fundId}</Table.Cell>
-                                <Table.Cell>{element.fundName}</Table.Cell>
-                                <Table.Cell>{element.startDateOnFAS}</Table.Cell>
-                                <Table.Cell>{element.createdOnFAS}</Table.Cell>
-                              </Table.Row>
-                            );
 
-                            return '';
-                          })} */}
-        </Table.Body>
-        </>
-    );
-      
-            
-                        
         return (
             <Modal open={this.state.isModalOpen}
                     onClose={this.handleClose}
@@ -77,9 +48,14 @@ export default class DetailTable extends Component {
             <Modal.Header>{this.props.ChartOptions.Header}</Modal.Header>
             <Modal.Content image scrolling>
               <Modal.Description>
-                  <Table celled>
-                    {TableData}
-                  </Table>
+                  <TableData 
+                              Data={this.state.DataList} 
+                              PartName={this.props.PartName} 
+                              XAxisPoint={this.props.XAxisPoint} 
+                              SelectedFund={this.props.ChartOptions.selectedFund} 
+                              Title={this.props.ChartOptions.Title}
+                              Timeline={this.props.ChartOptions.TimeLine}
+                  />
               </Modal.Description>
             </Modal.Content>
           </Modal>

@@ -3,6 +3,7 @@ import { Container, Grid, Segment, Header, Tab, Dropdown, Dimmer, Loader } from 
 import FundStatistics from './FundStatistics';
 import PerformanceStatistics from './PerformanceStatistics';
 import ErrorPage from './ErrorPage';
+import './Modified_CSS/Style.css';
 
 
 
@@ -22,6 +23,7 @@ export default class MainPage extends Component {
             selectedClient:'',
             fundList:[],
             filteredFundList:[],
+            SignOffDetails:[],
             selectedFund:'',
             selectedTimeline:'',
             loadErrorPage: false,
@@ -67,6 +69,23 @@ export default class MainPage extends Component {
                 filteredFundList:Data
             }))
             .catch(err=>console.log(err));
+
+        /* Fetching SignOff Data */
+        fetch('api/signoffdetails')
+            .then(Response=>{
+                if(Response.status!==200){
+                    this.setState({
+                        loadErrorPage: true,
+                        StatusCode: Response.status,
+                        StatusText:Response.statusText
+                    })
+                }
+                return Response.json()})
+            .then(Data=>this.setState({
+                SignOffDetails:Data
+            }))
+            .catch(err=>console.log(err));
+
     }
 
     /* Fetching Filtered Fund Lists */
@@ -143,6 +162,7 @@ export default class MainPage extends Component {
                                                                     FundList={this.state.filteredFundList} 
                                                                     TimeLine={this.state.selectedTimeline}
                                                                     SelectedFundId={this.state.selectedFund}
+                                                                    SignOffDetails = {this.state.SignOffDetails}
                                             />
                                         </Tab.Pane> 
                             }
@@ -198,33 +218,34 @@ export default class MainPage extends Component {
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={3}>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={3}>
                             <Dropdown
                                 onChange={this.handleClientChange}
                                 options={Clientoptions}
-                                placeholder='Choose Clients'
+                                placeholder='Select Client'
                                 search
                                 selection
                                 openOnFocus
-                                value={this.state.selectedClient}   
+                                value={this.state.selectedClient}
+                                   
                             />
                         </Grid.Column>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={3}>
                             <Dropdown
                                 onChange={this.handleFundChange}
                                 options={Fundoptions}
-                                placeholder='Choose Funds'
+                                placeholder='Select Fund'
                                 search
                                 selection
                                 openOnFocus
                                 value={this.state.selectedFund}
                             />
                         </Grid.Column>
-                        <Grid.Column width={4}>
+                        <Grid.Column width={3}>
                             <Dropdown
                                 onChange={this.handleTimelineChange}
                                 options={TimelineOptions}
-                                placeholder='Timeline'
+                                placeholder='Select Timeline'
                                 search
                                 selection
                                 openOnFocus
@@ -233,11 +254,13 @@ export default class MainPage extends Component {
                         </Grid.Column>     
                     </Grid.Row>
                 </Grid>
-                    <Tab
-                            menu={{ color: 'blue', attached: false, tabular: false }}
-                            panes={Tabs}
+                    <Segment>
+                        <Tab
+                                menu={{ color: 'blue', attached: false, tabular: false }}
+                                panes={Tabs}
                         >
-                    </Tab>
+                        </Tab>
+                    </Segment>
             </Container>
 
             

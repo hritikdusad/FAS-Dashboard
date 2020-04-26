@@ -87,12 +87,14 @@ export default function ColumnGraphs(props) {
             name: props.Options.YAxisTitle
         }]
     }
-    console.log(xAxisPoint);      
+   
     return (showModal) ? 
                         <DetailTable 
                                     open={true} 
                                     ChartOptions={props.Options} 
                                     ChartType="Column"
+                                    partName=""
+                                    XAxisPoint={xAxisPoint}
                         />
                         :
                         <HighchartsReact highcharts={Highcharts} options={options} />

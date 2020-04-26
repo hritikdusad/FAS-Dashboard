@@ -113,13 +113,14 @@ export default function StackedColumnGraphs(props) {
         }]
     };
 
-    console.log(xAxisPoint);
-    console.log(partName);
+
     return (showModal) ?
                         <DetailTable 
                                     open={true}
                                     ChartOptions={props.Options}
                                     ChartType="StackedColumn"
+                                    PartName={partName}
+                                    XAxisPoint={xAxisPoint}
                         />
                         :
                         <HighchartsReact highcharts={Highcharts} options={options} />
