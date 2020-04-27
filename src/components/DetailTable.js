@@ -44,8 +44,12 @@ export default class DetailTable extends Component {
         return (
             <Modal open={this.state.isModalOpen}
                     onClose={this.handleClose}
+                    dimmer='inverted'
+                    closeIcon
             >
-            <Modal.Header>{this.props.ChartOptions.Header}</Modal.Header>
+            <Modal.Header as='h1'>
+                {this.props.ChartOptions.Header}
+              </Modal.Header>
             <Modal.Content image scrolling>
               <Modal.Description>
                   <TableData 

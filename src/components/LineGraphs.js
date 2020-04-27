@@ -13,12 +13,13 @@ export default function LineGraphs(props) {
             type:'line',
             style:{
                 fontFamily:'serif'
-            }
+            },
+            backgroundColor:"#2A2A2A"
         },
         title: {
             text: props.Options.Title,
             style:{
-                color:'#000000',
+                color:'#FFFFFF',
                 fontWeight:'bold'
             }
         },
@@ -28,12 +29,12 @@ export default function LineGraphs(props) {
                 text: props.Options.YAxisTitle,
                 style:{
                     fontWeight: 'bold',
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             },
             labels: {
                 style: {
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             },
             tickInterval:props.Options.YAxisTickInterval
@@ -44,14 +45,14 @@ export default function LineGraphs(props) {
                 text:props.Options.XAxisTitle,
                 style:{
                     fontWeight: 'bold',
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             },
             categories:props.Options.XAxisLabel,
             tickInterval:props.Options.XAxisTickInterval,
             labels: {
                 style: {
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             }
         },
@@ -59,7 +60,10 @@ export default function LineGraphs(props) {
         legend: {
             layout: 'vertical',
             align: 'right',
-            verticalAlign: 'middle'
+            verticalAlign: 'middle',
+            itemStyle: {
+                color: '#FFFFFF'
+             }
         },
     
         plotOptions: {

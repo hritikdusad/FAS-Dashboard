@@ -13,12 +13,13 @@ export default function ColumnGraphs(props) {
             type: 'column',
             style:{
                 fontFamily:'serif'
-            }
+            },
+            backgroundColor:"#2A2A2A"
         },
         title: {
             text: props.Options.Title,
             style:{
-                color:'#000000',
+                color:'#FFFFFF',
                 fontWeight:'bold'
             }
         },

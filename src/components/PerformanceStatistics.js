@@ -306,18 +306,14 @@ export default function PerformanceStatistics(props) {
         <Grid stackable>
             <Grid.Row columns={2}>
                 <Grid.Column width={7} floated="left">
-                    <Segment>
                         <ColumnGraphs 
                                         Options={FundPerformanceOptions}
                         />
-                    </Segment>
                 </Grid.Column>
                 <Grid.Column width={7} floated="right">
-                    <Segment>
                         <LineGraphs 
                                     Options={SignOffDetailsOptions}
                         />
-                    </Segment>
                 </Grid.Column>
             </Grid.Row>
         </Grid>                

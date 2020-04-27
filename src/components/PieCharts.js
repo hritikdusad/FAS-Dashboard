@@ -13,25 +13,32 @@ export default function PieCharts(props){
       type: 'pie',
       style:{
         fontFamily:'serif'
-      }
+      },
+      backgroundColor:"#2A2A2A"
     },
+    legend: {
+      itemStyle: {
+         color: '#FFFFFF'
+      }
+   
+},
     title: {
       text: props.Options.Title,
       style:{
-        color:'#000000',
+        color:'#FFFFFF',
         fontWeight:'bold'
       }
     },
     plotOptions: {
-      series: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          dataLabels: {
-              enabled: false
-          },
-          showInLegend: true
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+            enabled: false
         },
+        showInLegend: true
+      },
+      series: {
           cursor: 'pointer',
           point: {
               events: {
@@ -56,7 +63,11 @@ export default function PieCharts(props){
     }
     },
     series: [{
+        name:"Data",
+        colorByPoint:true,
         data: props.Options.Data,
+        size:'80%',
+        innerSize:'50%',
     }],
   };
 

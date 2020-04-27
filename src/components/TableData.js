@@ -27,7 +27,7 @@ export default function TableData(props) {
         let state = (props.PartName === "Active")?1:0;
         return (
             <div>
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -49,10 +49,41 @@ export default function TableData(props) {
             </div>
         )
     }
+    else if(props.Title === "Active/InActive Clients"){
+        let state = (props.PartName === "Active")?1:0;
+        return (
+            <div>
+                <Table striped celled>
+                    <Table.Header>
+                        <Table.Row>
+                                <Table.HeaderCell>ID</Table.HeaderCell>
+                                <Table.HeaderCell>Name</Table.HeaderCell>
+                                <Table.HeaderCell>Start Date On FAS</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                
+                    <Table.Body>
+                                    {props.Data.map((element)=>{
+                                    if(element.isActive === state)
+                                        return (
+                                        <Table.Row>
+                                            <Table.Cell>{element.clientId}</Table.Cell>
+                                            <Table.Cell>{element.clientName}</Table.Cell>
+                                            <Table.Cell>{element.startDateOnFAS}</Table.Cell>
+                                        </Table.Row>
+                                        );
+            
+                                        return '';
+                                    })}
+                    </Table.Body>
+                </Table>
+            </div>
+        )
+    }
     else if(props.Title === "Period Wise Funds"){
         let SectionName = props.PartName;
         return(
-            <Table celled>
+            <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -82,7 +113,7 @@ export default function TableData(props) {
         SectionName = SectionName.split(" ").join("");
         console.log(SectionName);
         return(
-            <Table celled>
+            <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -111,7 +142,7 @@ export default function TableData(props) {
         let Time = props.XAxisPoint;
         if(props.Timeline==="Year"){
             return(
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -137,15 +168,16 @@ export default function TableData(props) {
         }
         else if(props.Timeline==="Months"){
             let CurrentYear = new Date().getFullYear();
-            let Month = DayMap[props.XAxisPoint];
+            let Month = MonthMap[props.XAxisPoint];
             return (
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
                                         if(parseInt(element.startDateOnFAS.substring(0,4)) === CurrentYear){
                                             if(parseInt(element.startDateOnFAS.substring(5,7))=== Month){
                                                 if(element.isActive === 1){
+                                                    console.log("Data");
                                                     return (
                                                         <Table.Row>
                                                             <Table.Cell>{element.fundId}</Table.Cell>
@@ -173,7 +205,7 @@ export default function TableData(props) {
             let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
             if(Time === 'Week 1'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -206,7 +238,7 @@ export default function TableData(props) {
             }
             else if(Time === 'Week 2'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -239,7 +271,7 @@ export default function TableData(props) {
             }
             else if(Time === 'Week 3'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -272,7 +304,7 @@ export default function TableData(props) {
             }
             else if(Time === 'Week 4'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -310,7 +342,7 @@ export default function TableData(props) {
             let Day = DayMap[props.XAxisPoint];
             console.log(Month);
             return(
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -348,7 +380,7 @@ export default function TableData(props) {
         let Month = MonthMap[props.XAxisPoint];
         if(props.Timeline ==="Year"){
             return(
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -374,7 +406,7 @@ export default function TableData(props) {
         }
         else if(props.Timeline === "Months"){
             return(
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -410,7 +442,7 @@ export default function TableData(props) {
             let SectionName = (props.PartName === "New Funds")?1:0;
             if(Time === 'Week 1'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -443,7 +475,7 @@ export default function TableData(props) {
             }
             else if(Time === 'Week 2'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -476,7 +508,7 @@ export default function TableData(props) {
             }
             else if(Time === 'Week 3'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -509,7 +541,7 @@ export default function TableData(props) {
             }
             else if(Time === 'Week 4'){
                 return(
-                    <Table celled>
+                    <Table striped celled>
                         {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -547,7 +579,7 @@ export default function TableData(props) {
             let Month = new Date().getMonth();
             let Day = DayMap[props.XAxisPoint];
             return(
-                <Table celled>
+                <Table striped celled>
                 {TableHeader}
                     <Table.Body>
                                     {props.Data.map((element)=>{
@@ -580,14 +612,16 @@ export default function TableData(props) {
     }
         else if(props.Title==="Fund Performance"){
             let Time = props.XAxisPoint;
-                if(props.SelectedFund === undefined){
+            console.log(Time);
+                if(props.SelectedFund === ""){
                     if(props.Timeline ==="Year"){
                         return(
-                            <Table celled>
+                            <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
                                                     if(element.startDateOnFAS.substring(0,4) === Time){
+                                                        console.log("Data");
                                                         return (
                                                             <Table.Row>
                                                                 <Table.Cell>{element.fundId}</Table.Cell>
@@ -608,7 +642,7 @@ export default function TableData(props) {
                         let CurrentYear = new Date().getFullYear();
                         let Month = MonthMap[props.XAxisPoint];
                         return(
-                            <Table celled>
+                            <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -640,7 +674,7 @@ export default function TableData(props) {
                         let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
                         if(Time === 'Week 1'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -671,7 +705,7 @@ export default function TableData(props) {
                         }
                         else if(Time === 'Week 2'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -702,7 +736,7 @@ export default function TableData(props) {
                         }
                         else if(Time === 'Week 3'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -733,7 +767,7 @@ export default function TableData(props) {
                         }
                         else if(Time === 'Week 4'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -768,7 +802,7 @@ export default function TableData(props) {
                         let Month = new Date().getMonth();
                         let Day = DayMap[props.XAxisPoint];
                         return(
-                            <Table celled>
+                            <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -799,7 +833,7 @@ export default function TableData(props) {
                 else{
                     if(props.Timeline ==="Year"){
                         return(
-                            <Table celled>
+                            <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -827,7 +861,7 @@ export default function TableData(props) {
                         let CurrentYear = new Date().getFullYear();
                         let Month = MonthMap[props.XAxisPoint];
                         return(
-                            <Table celled>
+                            <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -862,7 +896,7 @@ export default function TableData(props) {
                         let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
                         if(Time === 'Week 1'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -895,7 +929,7 @@ export default function TableData(props) {
                         }
                         else if(Time === 'Week 2'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -929,7 +963,7 @@ export default function TableData(props) {
                         }
                         else if(Time === 'Week 3'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -963,7 +997,7 @@ export default function TableData(props) {
                         }
                         else if(Time === 'Week 4'){
                             return(
-                                <Table celled>
+                                <Table striped celled>
                                     {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -1001,7 +1035,7 @@ export default function TableData(props) {
                         let Month = new Date().getMonth();
                         let Day = DayMap[props.XAxisPoint];
                         return(
-                            <Table celled>
+                            <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{
@@ -1035,7 +1069,7 @@ export default function TableData(props) {
         }
         else if(props.Title==="Sign-Off Details"){
             return(
-                <Table celled>
+                <Table striped celled>
                             {TableHeader}
                                 <Table.Body>
                                                 {props.Data.map((element)=>{

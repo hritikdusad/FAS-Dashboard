@@ -14,12 +14,13 @@ export default function StackedColumnGraphs(props) {
             type: 'column',
             style:{
                 fontFamily:'serif'
-            }
+            },
+            backgroundColor:"#2A2A2A"
         },
         title: {
             text: props.Options.Title,
             style:{
-                color:'#000000',
+                color:'#FFFFFF',
                 fontWeight:'bold'
             }
         },
@@ -28,13 +29,13 @@ export default function StackedColumnGraphs(props) {
                 text:props.Options.XAxisTitle,
                 style:{
                     fontWeight: 'bold',
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             },
             categories: props.Options.XAxisLabels,
             labels: {
                 style: {
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             }
             
@@ -45,13 +46,13 @@ export default function StackedColumnGraphs(props) {
                 text: props.Options.YAxisTitle,
                 style:{
                     fontWeight: 'bold',
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             },
             stackLabels: {
                 enabled: true,
                 style: {
-                    fontWeight: 'bold',
+                    // fontWeight: 'bold',
                     color: ( // theme
                         Highcharts.defaultOptions.title.style &&
                         Highcharts.defaultOptions.title.style.color
@@ -60,7 +61,7 @@ export default function StackedColumnGraphs(props) {
             },
             labels: {
                 style: {
-                    color: '#000000'
+                    color: '#FFFFFF'
                 }
             },
             tickInterval: props.Options.YAxisTickInterval
@@ -78,7 +79,7 @@ export default function StackedColumnGraphs(props) {
             shadow: false
         },
         tooltip: {
-            headerFormat: '<b>{point.x}</b><br/>',
+            headerFormat: '<p>{point.x}</p><br/>',
             pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
         },
         plotOptions: {

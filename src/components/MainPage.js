@@ -164,7 +164,7 @@ export default class MainPage extends Component {
                                                                     SelectedFundId={this.state.selectedFund}
                                                                     SignOffDetails = {this.state.SignOffDetails}
                                             />
-                                        </Tab.Pane> 
+                                            </Tab.Pane> 
                             }
                     ];
         /* Adding Client Options in the Drop Down */
@@ -205,20 +205,19 @@ export default class MainPage extends Component {
                 <Grid stackable>
                     <Grid.Row>
                         <Grid.Column>
-                        <Segment inverted>
+                        <Segment className="Background">
                                 <Header
-                                        as='h1' 
-                                        textAlign='center' 
-                                        inverted 
-                                        color="blue"
+                                        className="Heading"
+                                        as='h2'
+                                        
                                 >
                                     FAS DASHBOARD
                                 </Header>
-                            </Segment>
+                        </Segment>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={3}>
-                        <Grid.Column width={3}>
+                        <Grid.Column width={4}>
                             <Dropdown
                                 onChange={this.handleClientChange}
                                 options={Clientoptions}
@@ -230,7 +229,7 @@ export default class MainPage extends Component {
                                    
                             />
                         </Grid.Column>
-                        <Grid.Column width={3}>
+                        <Grid.Column width={4}>
                             <Dropdown
                                 onChange={this.handleFundChange}
                                 options={Fundoptions}
@@ -241,7 +240,7 @@ export default class MainPage extends Component {
                                 value={this.state.selectedFund}
                             />
                         </Grid.Column>
-                        <Grid.Column width={3}>
+                        <Grid.Column width={4}>
                             <Dropdown
                                 onChange={this.handleTimelineChange}
                                 options={TimelineOptions}
@@ -253,14 +252,17 @@ export default class MainPage extends Component {
                             />
                         </Grid.Column>     
                     </Grid.Row>
+                    <Grid.Row columns={1}>
+                        <Grid.Column>
+                            <Tab
+                                    menu={{ color: 'blue', attached: true, tabular: false }}
+                                    panes={Tabs}
+                            >
+                            </Tab>
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
-                    <Segment>
-                        <Tab
-                                menu={{ color: 'blue', attached: false, tabular: false }}
-                                panes={Tabs}
-                        >
-                        </Tab>
-                    </Segment>
+                        
             </Container>
 
             
