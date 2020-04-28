@@ -12,21 +12,22 @@ export default function PieCharts(props){
     chart: {
       type: 'pie',
       style:{
-        fontFamily:'serif'
+        fontFamily:'Overpass'
       },
-      backgroundColor:"#2A2A2A"
+      backgroundColor:"#0C1427"
     },
     legend: {
       itemStyle: {
-         color: '#FFFFFF'
+         color: '#EEF4FF'
+      },
+      itemHoverStyle: {
+        color: '#EEF4FF'
       }
-   
-},
+    },
     title: {
       text: props.Options.Title,
       style:{
-        color:'#FFFFFF',
-        fontWeight:'bold'
+        color:'#EEF4FF'
       }
     },
     plotOptions: {
@@ -67,7 +68,7 @@ export default function PieCharts(props){
         colorByPoint:true,
         data: props.Options.Data,
         size:'80%',
-        innerSize:'50%',
+        innerSize:'65%',
     }],
   };
 

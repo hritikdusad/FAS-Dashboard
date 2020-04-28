@@ -238,6 +238,7 @@ export default class MainPage extends Component {
                                 selection
                                 openOnFocus
                                 value={this.state.selectedFund}
+                                className="TimelineFilter"
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>

@@ -261,9 +261,9 @@ export default function PerformanceStatistics(props) {
         XAxisTitle: XAxisTitle,
         XAxisLabel: XAxisLabel,
         YAxisTitle: "Average Fund Performance Time(sec)",
-        YAxisTickInterval: 1,
+        YAxisTickInterval: 2,
         Data:AverageFundPerformanceTime,
-        Color: "#420084",
+        Color: "#424C96",
         Header:"Fund Performance Details",
         TimeLine: XAxisTitle,
         DataList:Funds,
@@ -287,31 +287,30 @@ export default function PerformanceStatistics(props) {
 
     SignOffDetailsOptions={
         Title: "Sign-Off Details",
-        YAxisTitle: "Delay (In Days)",
-        YAxisTickInterval:1,
         XAxisTitle: "Ideal Sign Off Dates",
         XAxisLabel:XAxixDates,
-        Data:[{
-            name:"Delay",
-            data:Delays,
-            color:"#f20000"
-        }],
-        
+        YAxisTitle: "Delay (In Days)",
+        YAxisTickInterval:1,
+        Data:Delays,
+        Color: "#fa1e1e",
         Header:"Delay Details",
         TimeLine: Timeline,
         DataList:Funds,
         selectedFund:SignOffDetailsTobeExtracted
     };
+
     return (
         <Grid stackable>
             <Grid.Row columns={2}>
-                <Grid.Column width={7} floated="left">
+                <Grid.Column width={7}
+                                className="TotalActiveFunds">
                         <ColumnGraphs 
+                                        
                                         Options={FundPerformanceOptions}
                         />
                 </Grid.Column>
-                <Grid.Column width={7} floated="right">
-                        <LineGraphs 
+                <Grid.Column width={7}>
+                        <ColumnGraphs 
                                     Options={SignOffDetailsOptions}
                         />
                 </Grid.Column>

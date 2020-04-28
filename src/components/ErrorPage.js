@@ -18,16 +18,15 @@ export default function ErrorPage(props) {
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
-                            <Segment inverted>
-                                <Header 
-                                        as='h1' 
-                                        textAlign='center' 
-                                        inverted 
-                                        color="blue"
+                        <Segment className="Background">
+                                <Header
+                                        className="Heading"
+                                        as='h2'
+                                        
                                 >
                                     FAS DASHBOARD
                                 </Header>
-                            </Segment>
+                        </Segment>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

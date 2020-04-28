@@ -5,6 +5,7 @@ import ColumnGraphs from './ColumnGraphs';
 import StackedColumnGraphs from './StackedColumnGraphs';
 import LineGraphs from './LineGraphs';
 import TableData from './TableData';
+import MainPage from './MainPage';
 
 
 

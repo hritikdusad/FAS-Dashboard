@@ -3,9 +3,135 @@
 }
 
 .Heading{
-    color:#FFFFFF !important;
+	color:#EEF4FF !important;
+	font-family: 'Overpass' !important;
 }
 
 .Background{
-    background-color:#121212 !important;
+	background-color:#070D19 !important;
+	
+}
+
+body{
+	background-color: #070D19 !important;
+	font-family: 'Overpass' !important;
+}
+
+.ui.grid{
+    background-color: #070D19;
+}
+
+.ui.selection.dropdown{
+    background-color: #0C1427 !important;
+}
+
+.ui.search.dropdown > input.search {
+    color: #EEF4FF;
+}
+
+.ui.selection.dropdown > .dropdown.icon{
+    color: #EEF4FF;
+}
+
+.ui.selection.dropdown .menu > .item {
+	border-top: 1px solid #121F3C;
+	color: #EEF4FF !important;
+	background: #0C1427;
+}
+
+
+
+.ui.dropdown .menu .selected.item, .ui.dropdown.selected {
+	background: #0C1427;
+	color: #EEF4FF;
+}
+
+.ui.selection.dropdown .menu > .message {
+	padding: .78571429rem 1.14285714rem;
+	background: #0C1427;
+	color: #EEF4FF;
+}
+
+.ui.menu:not(.vertical) .item {
+	display: flex;
+	align-items: center;
+	color: #EEF4FF;
+}
+.ui.attached.menu:not(.tabular) {
+	border: 1px solid #070D19;
+	color: #EEF4FF;
+	background-color: #0C1427;
+}
+
+.ui.grid > .column.row > [class*="four wide"].column, .ui.grid > .row > [class*="four wide"].column{
+    padding-left: 0.5rem;
+    margin-left: 1.5rem;
+    margin-top: -1.5rem;
+}
+
+.ui.dropdown > .text {
+	color: #EEF4FF !important;
+}
+
+.ui.table tr td {
+	border-top: 1px solid #121F3C;
+}
+
+.ui.celled.table tr td, .ui.celled.table tr th {
+	border-left: 1px solid #121F3C;
+}
+
+.ui.modal > .header:not(.ui) {
+	font-size: 1.42857143rem;
+	line-height: 1.28571429em;
+	font-weight: 700;
+	font-family: 'Overpass';
+	background-color: #0C1427;
+	color: #EEF4FF;
+}
+
+.ui.modal > .content {
+	display: block;
+	width: 100%;
+	font-size: 1em;
+	line-height: 1.4;
+	padding: 1.5rem;
+	background: #0C1427;
+}
+
+
+.ui.table thead th {
+	cursor: auto;
+	background: #f9fafb;
+	text-align: inherit;
+	color: rgba(0,0,0,.87);
+	padding: .92857143em .78571429em;
+	vertical-align: inherit;
+	font-style: none;
+	font-weight: 700;
+	text-transform: none;
+	border-bottom: 1px solid #121F3c;
+	border-left: none;
+}
+
+.ui.modal > .close {
+	cursor: pointer;
+	position: absolute;
+	top: -2.5rem;
+	right: -2.5rem;
+	z-index: 1;
+	opacity: .8;
+	font-size: 1.25em;
+	color: #121F3C;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: .625rem 0 0 0;
+}
+
+
+.TotalActiveFunds{
+	margin-left: 7rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin-right: 2rem;
 }

@@ -12,14 +12,14 @@ export default function LineGraphs(props) {
         chart:{
             type:'line',
             style:{
-                fontFamily:'serif'
+                fontFamily:'Overpass'
             },
-            backgroundColor:"#2A2A2A"
+            backgroundColor:"#0C1427"
         },
         title: {
             text: props.Options.Title,
             style:{
-                color:'#FFFFFF',
+                color:'#EEF4FF',
                 fontWeight:'bold'
             }
         },
@@ -28,33 +28,35 @@ export default function LineGraphs(props) {
             title: {
                 text: props.Options.YAxisTitle,
                 style:{
-                    fontWeight: 'bold',
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             },
             labels: {
                 style: {
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             },
-            tickInterval:props.Options.YAxisTickInterval
+            tickInterval:props.Options.YAxisTickInterval,
+            gridLineWidth:1,
+            gridLineColor:'#121F3C'
         },
     
         xAxis: {
             title:{
                 text:props.Options.XAxisTitle,
                 style:{
-                    fontWeight: 'bold',
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             },
             categories:props.Options.XAxisLabel,
             tickInterval:props.Options.XAxisTickInterval,
             labels: {
                 style: {
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
-            }
+            },
+            gridLineWidth:1,
+            gridLineColor:'#121F3C'
         },
     
         legend: {
@@ -62,7 +64,7 @@ export default function LineGraphs(props) {
             align: 'right',
             verticalAlign: 'middle',
             itemStyle: {
-                color: '#FFFFFF'
+                color: '#EEF4FF'
              }
         },
     

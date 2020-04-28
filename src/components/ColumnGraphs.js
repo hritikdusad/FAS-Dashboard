@@ -12,30 +12,28 @@ export default function ColumnGraphs(props) {
         chart: {
             type: 'column',
             style:{
-                fontFamily:'serif'
+                fontFamily:'Overpass'
             },
-            backgroundColor:"#2A2A2A"
+            backgroundColor:"#0C1427"
         },
         title: {
             text: props.Options.Title,
             style:{
-                color:'#FFFFFF',
-                fontWeight:'bold'
+                color:'#EEF4FF'
             }
         },
         xAxis: {
             title:{
                 text:props.Options.XAxisTitle,
                 style:{
-                    fontWeight: 'bold',
-                    color: '#000000'
+                    color:'#EEF4FF'
                 }
             },
             categories: props.Options.XAxisLabel,
             crosshair: true,
             labels: {
                 style: {
-                    color: '#000000'
+                    color: '#EEF4FF'
                 }
             }
         },
@@ -44,16 +42,16 @@ export default function ColumnGraphs(props) {
             title: {
                 text: props.Options.YAxisTitle,
                 style:{
-                    fontWeight: 'bold',
-                    color: '#000000'
+                    color: '#EEF4FF'
                 }
             },
             tickInterval: props.Options.YAxisTickInterval,
             labels: {
                 style: {
-                    color: '#000000'
+                    color: '#EEF4FF'
                 }
-            }
+            },
+            gridLineColor:'#121F3C'
         },
 
         tooltip: {

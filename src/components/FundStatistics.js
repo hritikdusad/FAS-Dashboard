@@ -280,12 +280,12 @@ export default function FundStatistics(props) {
             {
                 y:ActiveFunds,
                 name: "Active",
-                color:"#7d00a3"
+                color:"#3859FF"
             },
             {
                 y:InActiveFunds,
                 name:"InActive",
-                color:"#ed2578"
+                color:"#24BAFF"
             }
         ],
         Header:"Fund Details",
@@ -300,13 +300,13 @@ export default function FundStatistics(props) {
             {
                 y:ActiveClients,
                 name: "Active",
-                color:  "#ed2578"
+                color:  "#FC3995"
 
             },
             {
                 y:InActiveClients,
                 name:"InActive",
-                color:  "#f96731"
+                color:  "#FFAE00"
             }
         ],
         Header:"Client Details",
@@ -321,23 +321,23 @@ export default function FundStatistics(props) {
             {
                 y:YearlyRenewalFunds,
                 name: "Yearly",
-                color:  "#7d00a3"
+                color:  "#FC3995"
 
             },
             {
                 y:QuarterlyRenewalFunds,
                 name:"Quarterly",
-                color:  "#ed2578"
+                color:  "#3859FF"
             },
             {
                 y:MonthlyRenewalFunds,
                 name:"Monthly",
-                color:  "#f20000"
+                color:  "#FFAE00"
             },
             {
                 y:WeeklyRenewalFunds,
                 name:"Weekly",
-                color:  "#f96731"
+                color:  "#24BAFF"
             }
         ],
         Header:"Period Wise Fund Details",
@@ -349,7 +349,7 @@ export default function FundStatistics(props) {
     YearWiseFundTypesOptions={
         Title: "Year Wise Fund Types",
         YAxisTitle: "Number Of Funds",
-        YAxisTickInterval:1,
+        YAxisTickInterval:2,
         XAxisTitle: "Year",
         XAxisLabel:XAxisLabelYearWiseFunds,
         XAxisTickInterval:1,
@@ -357,22 +357,22 @@ export default function FundStatistics(props) {
             {
                 name:"Master Feeder",
                 data:MasterFeederData,
-                color:"#420084"
+                color:"#2CD9C5"
             },
             {
                 name:"Capital Call",
                 data:CapitalCallData,
-                color:"#9612a0"
+                color:"#FC5661"
             },
             {
                 name:"Regular Call",
                 data:RegularData,
-                color:"#f1844b"
+                color:"#FC4A9E"
             },
             {
                 name:"Modal Call",
                 data:ModalData,
-                color:"#fad622"
+                color:"#F5A623"
             },
         ],
         Header:"Fund Types Details",
@@ -386,9 +386,9 @@ export default function FundStatistics(props) {
         XAxisTitle: XAxisTitle,
         XAxisLabel: XAxisLabel,
         YAxisTitle: "Number Of Funds",
-        YAxisTickInterval: 1,
+        YAxisTickInterval: 3,
         Data:TotalActiveFunds,
-        Color:"#420084",
+        Color:"#424C96",
         Header:"Active Fund Details",
         TimeLine: XAxisTitle,
         DataList:Funds,
@@ -401,13 +401,13 @@ export default function FundStatistics(props) {
         XAxisTitle: XAxisTitle,
         XAxisLabels:XAxisLabel,
         YAxisTitle:"Number Of Funds",
-        YAxisTickInterval:8,
+        YAxisTickInterval:4,
         UpperStackName:"New Funds",
         UpperStackData:newFunds,
-        UpperStackColor:"#0FACF3",
+        UpperStackColor:"#24BAFF",
         LowerStackName:"Closed Funds",
         LowerStackData:closedFunds,
-        LowerStackColor:"#420084",
+        LowerStackColor:"#3859FF",
         Header:"New/Closed Fund Details",
         TimeLine:XAxisTitle,
         DataList:Funds,
@@ -448,14 +448,15 @@ export default function FundStatistics(props) {
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={2}>
-                    <Grid.Column floated="left" width={7}>
+                    <Grid.Column  width={7}
+                                className="TotalActiveFunds">
                         
                             <ColumnGraphs 
                                             Options={TotalNumberOfActiveFundsOptions}
                             />
                         
                     </Grid.Column>
-                    <Grid.Column floated="right" width={7}>
+                    <Grid.Column width={7}>
                         
                             <StackedColumnGraphs 
                                                     Options={NewClosedFundsOptions}

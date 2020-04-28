@@ -13,29 +13,27 @@ export default function StackedColumnGraphs(props) {
         chart: {
             type: 'column',
             style:{
-                fontFamily:'serif'
+                fontFamily:'OverPass'
             },
-            backgroundColor:"#2A2A2A"
+            backgroundColor:"#0C1427"
         },
         title: {
             text: props.Options.Title,
             style:{
-                color:'#FFFFFF',
-                fontWeight:'bold'
+                color:'#EEF4FF'
             }
         },
         xAxis: {
             title:{
                 text:props.Options.XAxisTitle,
                 style:{
-                    fontWeight: 'bold',
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             },
             categories: props.Options.XAxisLabels,
             labels: {
                 style: {
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             }
             
@@ -45,26 +43,19 @@ export default function StackedColumnGraphs(props) {
             title: {
                 text: props.Options.YAxisTitle,
                 style:{
-                    fontWeight: 'bold',
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             },
             stackLabels: {
-                enabled: true,
-                style: {
-                    // fontWeight: 'bold',
-                    color: ( // theme
-                        Highcharts.defaultOptions.title.style &&
-                        Highcharts.defaultOptions.title.style.color
-                    ) || 'gray'
-                }
+                enabled: false
             },
             labels: {
                 style: {
-                    color: '#FFFFFF'
+                    color: '#EEF4FF'
                 }
             },
-            tickInterval: props.Options.YAxisTickInterval
+            tickInterval: props.Options.YAxisTickInterval,
+            gridLineColor:'#121F3C'
         },
         legend: {
             align: 'right',
