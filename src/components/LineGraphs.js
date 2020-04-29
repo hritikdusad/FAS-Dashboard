@@ -65,7 +65,10 @@ export default function LineGraphs(props) {
             verticalAlign: 'middle',
             itemStyle: {
                 color: '#EEF4FF'
-             }
+             },
+             itemHoverStyle: {
+                color: '#EEF4FF'
+              }
         },
     
         plotOptions: {

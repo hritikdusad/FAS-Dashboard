@@ -5,7 +5,6 @@ import ColumnGraphs from './ColumnGraphs';
 import StackedColumnGraphs from './StackedColumnGraphs';
 import LineGraphs from './LineGraphs';
 import TableData from './TableData';
-import MainPage from './MainPage';
 
 
 
@@ -49,7 +48,7 @@ export default class DetailTable extends Component {
                     closeIcon
             >
             <Modal.Header as='h1'>
-                {this.props.ChartOptions.Header}
+                {this.props.ChartOptions.ModalHeading}
               </Modal.Header>
             <Modal.Content image scrolling>
               <Modal.Description>

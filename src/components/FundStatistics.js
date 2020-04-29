@@ -1,6 +1,6 @@
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
 import ColumnGraphs from './ColumnGraphs';
-import { Grid, Segment } from 'semantic-ui-react';
 import PieCharts from './PieCharts';
 import StackedColumnGraphs from './StackedColumnGraphs';
 import LineGraphs from './LineGraphs';
@@ -10,8 +10,12 @@ export default function FundStatistics(props) {
     let Funds = props.FundList, XAxisTitle,Timeline = props.TimeLine;
     let ActiveFunds=0,InActiveFunds=0,YearlyRenewalFunds=0,QuarterlyRenewalFunds=0,MonthlyRenewalFunds=0,WeeklyRenewalFunds=0;
     let ActiveInActiveFundsOptions ={}, TotalNumberOfActiveFundsOptions={}, NewClosedFundsOptions={}, PeriodWiseFundsOptions={}, YearWiseFundTypesOptions={};
-    let XAxisLabel = [], TotalActiveFunds = [], newFunds = [], closedFunds = [];
+    let XAxisLabel = [], TotalActiveFunds = [], NewFunds = [], ClosedFunds = [];
     let Clients = props.ClientList,ActiveClients=0,InActiveClients=0, ActiveInActiveClientsOptions = {};
+    let MasterFeederData=[],CapitalCallData=[],RegularData=[],ModalData=[],XAxisLabelYearWiseFunds=[];
+    let MasterFeederDataMap={},CapitalCallDataMap={},RegularDataMap={},ModalDataMap={};
+
+
     /* Condition For Labeling X Axis of the Graphs */
         if(Timeline === "" || Timeline === "Yearly"){
             XAxisTitle = "Year";
@@ -70,7 +74,7 @@ export default function FundStatistics(props) {
     /* When Selected Timeline is Defult/Year */
 
     if(XAxisTitle === "Year"){
-        let ActiveFundmap = {};
+        let ActiveFundmap = {},ClosedFundMap = {};;
         Funds.map(fund=>{
             let year = parseInt(fund.startDateOnFAS.substring(0,4));
                 if(ActiveFundmap[year]===undefined){
@@ -82,95 +86,98 @@ export default function FundStatistics(props) {
             return '';
         });
     
-        for(const key in ActiveFundmap){
-            XAxisLabel.push(key);
-            TotalActiveFunds.push(ActiveFundmap[key]);
-            newFunds.push(ActiveFundmap[key]);
-        }
-        let closedFundmap = {};
         Funds.map(fund=>{
             let year = parseInt(fund.startDateOnFAS.substring(0,4));
-                if(closedFundmap[year]===undefined){
-                    closedFundmap[year]=0;
+                if(ClosedFundMap[year]===undefined){
+                    ClosedFundMap[year]=0;
                 }
             if(parseInt(fund.isActive)===0){
-                    closedFundmap[year]=closedFundmap[year]+1;
+                    ClosedFundMap[year]=ClosedFundMap[year]+1;
             }
             return '';
         });
-        for(const key in closedFundmap){
-            closedFunds.push(closedFundmap[key]);
+
+        for(const key in ActiveFundmap){
+            XAxisLabel.push(key);
+            TotalActiveFunds.push(ActiveFundmap[key]);
+            NewFunds.push(ActiveFundmap[key]);
+        }
+
+        for(const key in ClosedFundMap){
+            ClosedFunds.push(ClosedFundMap[key]);
         }
     }
     
     /* When Selected Timeline is Months (Data collected for current year)*/ 
     else if(XAxisTitle === "Months"){
-        let newmonthsmap = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0};
-        let closedmonthsmap2 = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0};
-        let currentYear = new Date().getFullYear();
+        XAxisLabel = ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'];
+        let NewFundsMonthsWiseMap = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0};
+        let ClosedFundsMonthsWiseMap = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0};
+        let CurrentYear = new Date().getFullYear();
         Funds.map(fund=>{
-            if(parseInt(fund.startDateOnFAS.substring(0,4)) === currentYear){
+            if(parseInt(fund.startDateOnFAS.substring(0,4)) === CurrentYear){
                 let Month = parseInt(fund.startDateOnFAS.substring(5,7));
                 if(parseInt(fund.isActive)===1){
-                    newmonthsmap[Month] = newmonthsmap[Month]+1;
+                    NewFundsMonthsWiseMap[Month] = NewFundsMonthsWiseMap[Month]+1;
                 }
                 else if(parseInt(fund.isActive)===0){
-                    closedmonthsmap2[Month] = closedmonthsmap2[Month]+1;
+                    ClosedFundsMonthsWiseMap[Month] = ClosedFundsMonthsWiseMap[Month]+1;
                 }
             } 
             return '';
         });
-        for(const key in newmonthsmap){
-            TotalActiveFunds.push(newmonthsmap[key]);
-            newFunds.push(newmonthsmap[key]);
+        for(const key in NewFundsMonthsWiseMap){
+            TotalActiveFunds.push(NewFundsMonthsWiseMap[key]);
+            NewFunds.push(NewFundsMonthsWiseMap[key]);
         }
         
-        for(const key in closedmonthsmap2){
-            closedFunds.push(closedmonthsmap2[key]);
+        for(const key in ClosedFundsMonthsWiseMap){
+            ClosedFunds.push(ClosedFundsMonthsWiseMap[key]);
         }
-        XAxisLabel = ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'];
+       
     }
 
     else if(XAxisTitle === "Weeks"){
-        let newWeekMap = {'Week 1':0,'Week 2':0,'Week 3':0,'Week 4':0}, closedWeekMap ={'Week 1':0,'Week 2':0,'Week 3':0,'Week 4':0};
-        let currentYear = new Date().getFullYear();
+        XAxisLabel=['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+        let NewFundsWeekWiseMap = {'Week 1':0,'Week 2':0,'Week 3':0,'Week 4':0}, ClosedFundsWeekWiseMap ={'Week 1':0,'Week 2':0,'Week 3':0,'Week 4':0};
+        let CurrentYear = new Date().getFullYear();
         let PreviousMonth = new Date().getMonth();
-        let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+        let NumberOfDaysInPreviousMonth = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
         Funds.map(fund=>{
-            if(parseInt(fund.startDateOnFAS.substring(0,4)) === currentYear){
+            if(parseInt(fund.startDateOnFAS.substring(0,4)) === CurrentYear){
                 let Month = parseInt(fund.startDateOnFAS.substring(5,7));
                 if(PreviousMonth === Month){
                     let day = parseInt(fund.startDateOnFAS.substring(8,10));
                     if(day>=1 && day<=7){
                         if(parseInt(fund.isActive)===1){
-                            newWeekMap['Week 1'] = newWeekMap['Week 1']+1;
+                            NewFundsWeekWiseMap['Week 1'] = NewFundsWeekWiseMap['Week 1']+1;
                         }
                         else if(parseInt(fund.isActive)===0){
-                            closedWeekMap['Week 1'] = closedWeekMap['Week 1']+1;
+                            ClosedFundsWeekWiseMap['Week 1'] = ClosedFundsWeekWiseMap['Week 1']+1;
                         }
                     }
                     else if(day>=8 && day <=14){
                         if(parseInt(fund.isActive)===1){
-                            newWeekMap['Week 2'] = newWeekMap['Week 2']+1;
+                            NewFundsWeekWiseMap['Week 2'] = NewFundsWeekWiseMap['Week 2']+1;
                         }
                         else if(parseInt(fund.isActive)===0){
-                            closedWeekMap['Week 2'] = closedWeekMap['Week 2']+1;
+                            ClosedFundsWeekWiseMap['Week 2'] = ClosedFundsWeekWiseMap['Week 2']+1;
                         }
                     }
                     else if(day>=15 && day <=21){
                         if(parseInt(fund.isActive)===1){
-                            newWeekMap['Week 3'] = newWeekMap['Week 3']+1;
+                            NewFundsWeekWiseMap['Week 3'] = NewFundsWeekWiseMap['Week 3']+1;
                         }
                         else if(parseInt(fund.isActive)===0){
-                            closedWeekMap['Week 3'] = closedWeekMap['Week 3']+1;
+                            ClosedFundsWeekWiseMap['Week 3'] = ClosedFundsWeekWiseMap['Week 3']+1;
                         }
                     }
-                    else if(day>=22 && day <=numberOfDays){
+                    else if(day>=22 && day <=NumberOfDaysInPreviousMonth){
                         if(parseInt(fund.isActive)===1){
-                            newWeekMap['Week 4'] = newWeekMap['Week 4']+1;
+                            NewFundsWeekWiseMap['Week 4'] = NewFundsWeekWiseMap['Week 4']+1;
                         }
                         else if(parseInt(fund.isActive)===0){
-                            closedWeekMap['Week 4'] = closedWeekMap['Week 4']+1;
+                            ClosedFundsWeekWiseMap['Week 4'] = ClosedFundsWeekWiseMap['Week 4']+1;
                         }
                     }
                 }
@@ -179,53 +186,54 @@ export default function FundStatistics(props) {
             return '';
         });
 
-        for(const key in newWeekMap){
-            TotalActiveFunds.push(newWeekMap[key]);
-            newFunds.push(newWeekMap[key]);
+        for(const key in NewFundsWeekWiseMap){
+            TotalActiveFunds.push(NewFundsWeekWiseMap[key]);
+            NewFunds.push(NewFundsWeekWiseMap[key]);
         }
         
-        for(const key in closedWeekMap){
-            closedFunds.push(closedWeekMap[key]);
+        for(const key in ClosedFundsWeekWiseMap){
+            ClosedFunds.push(ClosedFundsWeekWiseMap[key]);
         }
 
-        XAxisLabel=['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+        
     }
 
     else if(XAxisTitle ==="Days"){
-        let days = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
-        let newmonthsmap ={}, closedmonthsmap2 = {};
-        for(let i=1;i<=days;i++){
-            let s = "Day "+i;
-            XAxisLabel.push(s);
-            closedmonthsmap2[i] = 0;
-            newmonthsmap[i] = 0; 
+        let NumberOfDaysInPreviousMonth = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+        let NewFundsDayWiseMap ={}, ClosedFundsDayWiseMap = {};
+        let CurrentYear = new Date().getFullYear();
+        let PreviousMonth = new Date().getMonth();
+        for(let i=1;i<=NumberOfDaysInPreviousMonth;i++){
+            let PointOnXAxis = "Day "+i;
+            XAxisLabel.push(PointOnXAxis);
+            ClosedFundsDayWiseMap[i] = 0;
+            NewFundsDayWiseMap[i] = 0; 
         }
         Funds.forEach(element => {
-            if(parseInt(element.startDateOnFAS.substring(5,7)) === new Date().getMonth()){
-                let day = parseInt(element.startDateOnFAS.substring(8,10));
-                if(element.isActive === 1){
-                    newmonthsmap[day] += 1;
-                }
-                else{
-                    closedmonthsmap2[day] += 1;
+            if(parseInt(element.startDateOnFAS.substring(0,4)) === CurrentYear){
+                if(parseInt(element.startDateOnFAS.substring(5,7)) === PreviousMonth){
+                    let day = parseInt(element.startDateOnFAS.substring(8,10));
+                    if(element.isActive === 1){
+                        NewFundsDayWiseMap[day] += 1;
+                    }
+                    else{
+                        ClosedFundsDayWiseMap[day] += 1;
+                    }
                 }
             }
         });
-        for(const key in newmonthsmap){
-            TotalActiveFunds.push(newmonthsmap[key]);
-            newFunds.push(newmonthsmap[key]);
+        for(const key in NewFundsDayWiseMap){
+            TotalActiveFunds.push(NewFundsDayWiseMap[key]);
+            NewFunds.push(NewFundsDayWiseMap[key]);
         }
         
-        for(const key in closedmonthsmap2){
-            closedFunds.push(closedmonthsmap2[key]);
+        for(const key in ClosedFundsDayWiseMap){
+            ClosedFunds.push(ClosedFundsDayWiseMap[key]);
         }
     }
 
 
     /* Year Wise Fund Types */
-    let MasterFeederData=[],CapitalCallData=[],RegularData=[],ModalData=[],XAxisLabelYearWiseFunds=[];
-    let MasterFeederDataMap={},CapitalCallDataMap={},RegularDataMap={},ModalDataMap={};
-
     Funds.map((fund)=>{
         let year = parseInt(fund.startDateOnFAS.substring(0,4));
         if(MasterFeederDataMap[year]===undefined){
@@ -288,7 +296,7 @@ export default function FundStatistics(props) {
                 color:"#24BAFF"
             }
         ],
-        Header:"Fund Details",
+        ModalHeading:"Fund Details",
         TimeLine:'',
         DataList:Funds,
         selectedFund:''
@@ -309,7 +317,7 @@ export default function FundStatistics(props) {
                 color:  "#FFAE00"
             }
         ],
-        Header:"Client Details",
+        ModalHeading:"Client Details",
         TimeLine:'',
         DataList:Clients,
         selectedFund:''
@@ -340,7 +348,7 @@ export default function FundStatistics(props) {
                 color:  "#24BAFF"
             }
         ],
-        Header:"Period Wise Fund Details",
+        ModalHeading:"Period Wise Fund Details",
         TimeLine:'',
         DataList:Funds,
         selectedFund:''
@@ -375,7 +383,7 @@ export default function FundStatistics(props) {
                 color:"#F5A623"
             },
         ],
-        Header:"Fund Types Details",
+        ModalHeading:"Fund Types Details",
         TimeLine:'',
         DataList:Funds,
         selectedFund:''
@@ -389,7 +397,7 @@ export default function FundStatistics(props) {
         YAxisTickInterval: 3,
         Data:TotalActiveFunds,
         Color:"#424C96",
-        Header:"Active Fund Details",
+        ModalHeading:"Active Fund Details",
         TimeLine: XAxisTitle,
         DataList:Funds,
         selectedFund:''
@@ -403,12 +411,12 @@ export default function FundStatistics(props) {
         YAxisTitle:"Number Of Funds",
         YAxisTickInterval:4,
         UpperStackName:"New Funds",
-        UpperStackData:newFunds,
+        UpperStackData:NewFunds,
         UpperStackColor:"#24BAFF",
         LowerStackName:"Closed Funds",
-        LowerStackData:closedFunds,
+        LowerStackData:ClosedFunds,
         LowerStackColor:"#3859FF",
-        Header:"New/Closed Fund Details",
+        ModalHeading:"New/Closed Fund Details",
         TimeLine:XAxisTitle,
         DataList:Funds,
         selectedFund:''

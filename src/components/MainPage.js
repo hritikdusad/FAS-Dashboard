@@ -3,11 +3,11 @@ import { Container, Grid, Segment, Header, Tab, Dropdown, Dimmer, Loader } from 
 import FundStatistics from './FundStatistics';
 import PerformanceStatistics from './PerformanceStatistics';
 import ErrorPage from './ErrorPage';
-import './Modified_CSS/Style.css';
+import '../CSS/Style.css';
 
 
 
-const TimelineOptions = [
+const timeLineOptions = [
     { key: 1, text: 'Yearly', value: 'Yearly' },
     { key: 2, text: 'Monthly', value: 'Monthly'},
     { key: 3, text: 'Weekly', value: 'Weekly'},
@@ -23,12 +23,12 @@ export default class MainPage extends Component {
             selectedClient:'',
             fundList:[],
             filteredFundList:[],
-            SignOffDetails:[],
+            signOffDetailsList:[],
             selectedFund:'',
             selectedTimeline:'',
             loadErrorPage: false,
-            StatusCode: '',
-            StatusText:''
+            statusCode: '',
+            statusText:''
         };
         this.handleClientChange = this.handleClientChange.bind(this);
         this.handleFundChange = this.handleFundChange.bind(this);
@@ -43,8 +43,8 @@ export default class MainPage extends Component {
                 if(Response.status!==200){
                     this.setState({
                         loadErrorPage: true,
-                        StatusCode: Response.status,
-                        StatusText:Response.statusText
+                        statusCode: Response.status,
+                        statusText:Response.statusText
                     })
                 }
                 return Response.json()})
@@ -59,8 +59,8 @@ export default class MainPage extends Component {
                 if(Response.status!==200){
                     this.setState({
                         loadErrorPage: true,
-                        StatusCode: Response.status,
-                        StatusText:Response.statusText
+                        statusCode: Response.status,
+                        statusText:Response.statusText
                     })
                 }
                 return Response.json()})
@@ -76,20 +76,20 @@ export default class MainPage extends Component {
                 if(Response.status!==200){
                     this.setState({
                         loadErrorPage: true,
-                        StatusCode: Response.status,
-                        StatusText:Response.statusText
+                        statusCode: Response.status,
+                        statusText:Response.statusText
                     })
                 }
                 return Response.json()})
             .then(Data=>this.setState({
-                SignOffDetails:Data
+                signOffDetailsList:Data
             }))
             .catch(err=>console.log(err));
 
     }
 
     /* Fetching Filtered Fund Lists */
-    fetchfund(Client){
+    fetchFilteredFunds(Client){
         let funds = [],filteredFunds = [];
         fetch('api/Clients/'+Client)
             .then(Response => Response.json())
@@ -125,7 +125,7 @@ export default class MainPage extends Component {
             filteredFundList:[],
             selectedFund:''
         });
-        this.fetchfund(value);
+        this.fetchFilteredFunds(value);
     }
 
     handleFundChange(event, {value}){
@@ -142,8 +142,8 @@ export default class MainPage extends Component {
 
 
     render() {
-        const Clientoptions = [],Fundoptions = [];
-        const Tabs = [
+        const clientOptions = [],fundOptions = [];
+        const tabsContent = [
                             { 
                             menuItem: 'Fund Statistics',
                             render: () => <Tab.Pane>
@@ -162,14 +162,14 @@ export default class MainPage extends Component {
                                                                     FundList={this.state.filteredFundList} 
                                                                     TimeLine={this.state.selectedTimeline}
                                                                     SelectedFundId={this.state.selectedFund}
-                                                                    SignOffDetails = {this.state.SignOffDetails}
+                                                                    SignOffDetails = {this.state.signOffDetailsList}
                                             />
                                             </Tab.Pane> 
                             }
                     ];
         /* Adding Client Options in the Drop Down */
         this.state.clientList.forEach(data => {
-            Clientoptions.push({
+            clientOptions.push({
                 key:data.clientId,
                 text:data.clientName,
                 value:data.clientId
@@ -178,7 +178,7 @@ export default class MainPage extends Component {
 
         /*  Adding Fund Options in the Drop Down*/
         this.state.filteredFundList.forEach(data=>{
-            Fundoptions.push({
+            fundOptions.push({
                 key:data.fundId,
                 text:data.fundName,
                 value:data.fundId
@@ -187,11 +187,11 @@ export default class MainPage extends Component {
 
         /* Conditional Rendering of Error Page if Response Status is not 200 */
         if(this.state.loadErrorPage){
-            return <ErrorPage StatusCode={this.state.StatusCode} StatusText={this.state.StatusText} />
+            return <ErrorPage StatusCode={this.state.statusCode} StatusText={this.state.statusText} />
         }
 
         /* Loading Dimmer when the data is loaded to states of the component */
-        if(this.state.clientList.length === 0 || this.state.fundList.length === 0){
+        if(this.state.clientList.length === 0 || this.state.fundList.length === 0 || this.state.signOffDetailsList.length === 0){
             return (
                 <Dimmer active inverted>
                     <Loader inverted size="massive">Loading</Loader>
@@ -208,8 +208,7 @@ export default class MainPage extends Component {
                         <Segment className="Background">
                                 <Header
                                         className="Heading"
-                                        as='h2'
-                                        
+                                        as='h2'   
                                 >
                                     FAS DASHBOARD
                                 </Header>
@@ -220,7 +219,7 @@ export default class MainPage extends Component {
                         <Grid.Column width={4}>
                             <Dropdown
                                 onChange={this.handleClientChange}
-                                options={Clientoptions}
+                                options={clientOptions}
                                 placeholder='Select Client'
                                 search
                                 selection
@@ -232,7 +231,7 @@ export default class MainPage extends Component {
                         <Grid.Column width={4}>
                             <Dropdown
                                 onChange={this.handleFundChange}
-                                options={Fundoptions}
+                                options={fundOptions}
                                 placeholder='Select Fund'
                                 search
                                 selection
@@ -244,7 +243,7 @@ export default class MainPage extends Component {
                         <Grid.Column width={4}>
                             <Dropdown
                                 onChange={this.handleTimelineChange}
-                                options={TimelineOptions}
+                                options={timeLineOptions}
                                 placeholder='Select Timeline'
                                 search
                                 selection
@@ -257,13 +256,12 @@ export default class MainPage extends Component {
                         <Grid.Column>
                             <Tab
                                     menu={{ color: 'blue', attached: true, tabular: false }}
-                                    panes={Tabs}
+                                    panes={tabsContent}
                             >
                             </Tab>
                         </Grid.Column>
                     </Grid.Row>
-                </Grid>
-                        
+                </Grid>        
             </Container>
 
             

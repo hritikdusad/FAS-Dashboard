@@ -135,3 +135,8 @@ body{
 	padding-right: 1rem;
 	margin-right: 2rem;
 }
+
+.ui.primary.button, .ui.primary.buttons .button {
+    margin-left: 90rem;
+    width: 20%;
+}

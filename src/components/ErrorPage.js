@@ -38,8 +38,7 @@ export default function ErrorPage(props) {
                     <p>{props.StatusText}</p>
                 </Message>
                 <Button 
-                        positive 
-                        fluid  
+                        primary  
                         onClick={handleClick}
                 >
                     Try Again

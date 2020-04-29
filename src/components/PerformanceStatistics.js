@@ -1,7 +1,6 @@
 import React from 'react';
-import LineGraphs from './LineGraphs';
 import ColumnGraphs from './ColumnGraphs';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 
 
 export default function PerformanceStatistics(props) {
@@ -27,25 +26,25 @@ export default function PerformanceStatistics(props) {
         if(XAxisTitle === "Year"){
             /*If no particular Fund is Selected*/
             if(SelectedFundId === ""){
-                let FundPerformancemap = {};
+                let FundPerformanceYearWiseMap = {};
                 Funds.map(fund=>{
-                        let year = parseInt(fund.startDateOnFAS.substring(0,4));
-                        if(FundPerformancemap[year]===undefined){
-                            FundPerformancemap[year] = [];
+                        let Year = parseInt(fund.startDateOnFAS.substring(0,4));
+                        if(FundPerformanceYearWiseMap[Year]===undefined){
+                            FundPerformanceYearWiseMap[Year] = [];
                         }
-                            FundPerformancemap[year].push(fund.fundPerformanceTime);
+                        FundPerformanceYearWiseMap[Year].push(fund.fundPerformanceTime);
                     return '';
                 });
 
-                for(const key in FundPerformancemap){
+                for(const key in FundPerformanceYearWiseMap){
                     XAxisLabel.push(key);
-                    let FundPerformance = FundPerformancemap[key];
-                    let sum=0,average;
-                    for(let i=0;i<FundPerformance.length;i++){
-                        sum += FundPerformance[i];
+                    let YearWiseFundPerformanceArray = FundPerformanceYearWiseMap[key];
+                    let TotalFundPerformanceTime=0,YearWiseAverageFundPerformanceTime;
+                    for(let i=0;i<YearWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += YearWiseFundPerformanceArray[i];
                     }
-                    average = sum/FundPerformance.length;
-                    AverageFundPerformanceTime.push(average);
+                    YearWiseAverageFundPerformanceTime = TotalFundPerformanceTime/YearWiseFundPerformanceArray.length;
+                    AverageFundPerformanceTime.push(YearWiseAverageFundPerformanceTime);
                 }
             }
             /* If A fund is selected */
@@ -61,169 +60,169 @@ export default function PerformanceStatistics(props) {
         /*When The Selected Timeline is Months */
         else if(XAxisTitle === "Months"){
             XAxisLabel = ['jan','feb','mar','apr','may','jun','jul','aug','sept','oct','nov','dec'];
-            let FundPerformancemap = {1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[],11:[],12:[]};
-            let currentYear = new Date().getFullYear();
+            let FundPerformanceMapMonthsWise = {1:[],2:[],3:[],4:[],5:[],6:[],7:[],8:[],9:[],10:[],11:[],12:[]};
+            let CurrentYear = new Date().getFullYear();
             if(SelectedFundId === ""){
                 Funds.map(fund=>{
-                    if(parseInt(fund.startDateOnFAS.substring(0,4)) === currentYear){
+                    if(parseInt(fund.startDateOnFAS.substring(0,4)) === CurrentYear){
                         let Month = parseInt(fund.startDateOnFAS.substring(5,7));
-                        FundPerformancemap[Month].push(fund.fundPerformanceTime);
+                        FundPerformanceMapMonthsWise[Month].push(fund.fundPerformanceTime);
                     }
                     return '';    
                 });
-                for(const key in FundPerformancemap){
-                    let FundPerformance = FundPerformancemap[key];
-                    let sum=0,average;
-                    for(let i=0;i<FundPerformance.length;i++){
-                        sum += FundPerformance[i];
+                for(const key in FundPerformanceMapMonthsWise){
+                    let MonthWiseFundPerformanceArray = FundPerformanceMapMonthsWise[key];
+                    let TotalFundPerformanceTime=0,MonthWiseAverageFundPerformance;
+                    for(let i=0;i<MonthWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += MonthWiseFundPerformanceArray[i];
                     }
-                    average = sum/FundPerformance.length;
-                    if(isNaN(average)){
+                    MonthWiseAverageFundPerformance = TotalFundPerformanceTime/MonthWiseFundPerformanceArray.length;
+                    if(isNaN(MonthWiseAverageFundPerformance)){
                         AverageFundPerformanceTime.push(0);
                     }
                     else{
-                        AverageFundPerformanceTime.push(average);
+                        AverageFundPerformanceTime.push(MonthWiseAverageFundPerformance);
                     }
                 }
-                console.log(FundPerformancemap);
             }
             /* When a Fund is Selected */
             else{
                 Funds.forEach(element => {
                     if(element.fundId === SelectedFundId){
-                        if(parseInt(element.startDateOnFAS.substring(0,4))=== currentYear){
+                        if(parseInt(element.startDateOnFAS.substring(0,4))=== CurrentYear){
                             let Month = parseInt(element.startDateOnFAS.substring(5,7));
-                            FundPerformancemap[Month].push(element.fundPerformanceTime);
+                            FundPerformanceMapMonthsWise[Month].push(element.fundPerformanceTime);
                         }
                     }
                 });
-                for(const key in FundPerformancemap){
-                    let FundPerformance = FundPerformancemap[key];
-                    let sum=0,average;
-                    for(let i=0;i<FundPerformance.length;i++){
-                        sum += FundPerformance[i];
+                for(const key in FundPerformanceMapMonthsWise){
+                    let MonthWiseFundPerformanceArray = FundPerformanceMapMonthsWise[key];
+                    let TotalFundPerformanceTime=0,MonthWiseAverageFundPerformance;
+                    for(let i=0;i<MonthWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += MonthWiseFundPerformanceArray[i];
                     }
-                    average = sum/FundPerformance.length;
-                    if(isNaN(average)){
+                    MonthWiseAverageFundPerformance = TotalFundPerformanceTime/MonthWiseFundPerformanceArray.length;
+                    if(isNaN(MonthWiseAverageFundPerformance)){
                         AverageFundPerformanceTime.push(0);
                     }
                     else{
-                        AverageFundPerformanceTime.push(average);
+                        AverageFundPerformanceTime.push(MonthWiseAverageFundPerformance);
                     }
                 }
             }
         }
 
         else if(XAxisTitle === "Weeks"){
-            let WeekFundPerformance = {'Week 1':[],'Week 2': [],'Week 3':[],'Week 4':[]}
-            let currentYear = new Date().getFullYear();
+            let FundPerformanceMapWeekWise = {'Week 1':[],'Week 2': [],'Week 3':[],'Week 4':[]}
+            let CurrentYear = new Date().getFullYear();
             let PreviousMonth = new Date().getMonth();
-            let numberOfDays = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+            let NumberOfDaysPreviousMonth = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+            XAxisLabel = ['Week 1','Week 2','Week 3','Week 4']; 
             if(SelectedFundId === ""){
                 Funds.forEach(element => {
-                    if(parseInt(element.startDateOnFAS.substring(0,4)) === currentYear){
+                    if(parseInt(element.startDateOnFAS.substring(0,4)) === CurrentYear){
                         if(parseInt(element.startDateOnFAS.substring(5,7)) === PreviousMonth){
                             let day = parseInt(element.startDateOnFAS.substring(8,10));
                             if(day>=1 && day<=7){
-                                WeekFundPerformance['Week 1'].push(element.fundPerformanceTime);
+                                FundPerformanceMapWeekWise['Week 1'].push(element.fundPerformanceTime);
                             }   
                             else if(day>=8 && day <=14){
-                                WeekFundPerformance['Week 2'].push(element.fundPerformanceTime);
+                                FundPerformanceMapWeekWise['Week 2'].push(element.fundPerformanceTime);
                             }
                             else if(day>=15 && day <=21){
-                                WeekFundPerformance['Week 3'].push(element.fundPerformanceTime);
+                                FundPerformanceMapWeekWise['Week 3'].push(element.fundPerformanceTime);
                             }
-                            else if(day>=22 && day <=numberOfDays){
-                                WeekFundPerformance['Week 4'].push(element.fundPerformanceTime);
+                            else if(day>=22 && day <=NumberOfDaysPreviousMonth){
+                                FundPerformanceMapWeekWise['Week 4'].push(element.fundPerformanceTime);
                             }
                         }
                         
                     }
                 });
-                for(const key in WeekFundPerformance){
-                    let WeekFundPerformancearray = WeekFundPerformance[key];
-                    let sum=0,average;
-                    for(let i=0;i<WeekFundPerformancearray.length;i++){
-                        sum += WeekFundPerformancearray[i];
+                for(const key in FundPerformanceMapWeekWise){
+                    let WeekWiseFundPerformanceArray = FundPerformanceMapWeekWise[key];
+                    let TotalFundPerformanceTime=0,WeekWiseAverageFundPerformance;
+                    for(let i=0;i<WeekWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += WeekWiseFundPerformanceArray[i];
                     }
-                    average = sum/WeekFundPerformancearray.length;
-                    if(isNaN(average)){
+                    WeekWiseAverageFundPerformance = TotalFundPerformanceTime/WeekWiseFundPerformanceArray.length;
+                    if(isNaN(WeekWiseAverageFundPerformance)){
                         AverageFundPerformanceTime.push(0);
                     }
                     else{
-                        AverageFundPerformanceTime.push(average);
+                        AverageFundPerformanceTime.push(WeekWiseAverageFundPerformance);
                     }
                 }
             }
             else{
                 Funds.forEach(element => {
                     if(element.fundId === SelectedFundId){
-                        if(parseInt(element.startDateOnFAS.substring(0,4)) === currentYear){
+                        if(parseInt(element.startDateOnFAS.substring(0,4)) === CurrentYear){
                             if(parseInt(element.startDateOnFAS.substring(5,7)) === PreviousMonth){
                                 let day = parseInt(element.startDateOnFAS.substring(8,10));
                                 if(day>=1 && day<=7){
-                                    WeekFundPerformance['Week 1'].push(element.fundPerformanceTime);
+                                    FundPerformanceMapWeekWise['Week 1'].push(element.fundPerformanceTime);
                                 }   
                                 else if(day>=8 && day <=14){
-                                    WeekFundPerformance['Week 2'].push(element.fundPerformanceTime);
+                                    FundPerformanceMapWeekWise['Week 2'].push(element.fundPerformanceTime);
                                 }
                                 else if(day>=15 && day <=21){
-                                    WeekFundPerformance['Week 3'].push(element.fundPerformanceTime);
+                                    FundPerformanceMapWeekWise['Week 3'].push(element.fundPerformanceTime);
                                 }
-                                else if(day>=22 && day <=numberOfDays){
-                                    WeekFundPerformance['Week 4'].push(element.fundPerformanceTime);
+                                else if(day>=22 && day <=NumberOfDaysPreviousMonth){
+                                    FundPerformanceMapWeekWise['Week 4'].push(element.fundPerformanceTime);
                                 }
                             }
                             
                         }
                     } 
                 });
-                for(const key in WeekFundPerformance){
-                    let WeekFundPerformancearray = WeekFundPerformance[key];
-                    let sum=0,average;
-                    for(let i=0;i<WeekFundPerformancearray.length;i++){
-                        sum += WeekFundPerformancearray[i];
+                for(const key in FundPerformanceMapWeekWise){
+                    let WeekWiseFundPerformanceArray = FundPerformanceMapWeekWise[key];
+                    let TotalFundPerformanceTime=0,WeekWiseAverageFundPerformance;
+                    for(let i=0;i<WeekWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += WeekWiseFundPerformanceArray[i];
                     }
-                    average = sum/WeekFundPerformancearray.length;
-                    if(isNaN(average)){
+                    WeekWiseAverageFundPerformance = TotalFundPerformanceTime/WeekWiseFundPerformanceArray.length;
+                    if(isNaN(WeekWiseAverageFundPerformance)){
                         AverageFundPerformanceTime.push(0);
                     }
                     else{
-                        AverageFundPerformanceTime.push(average);
+                        AverageFundPerformanceTime.push(WeekWiseAverageFundPerformance);
                     }
                 }
             }
-            XAxisLabel = ['Week 1','Week 2','Week 3','Week 4'];
+
         }
         /*When The Selected Timeline is Daily */
         else if(XAxisTitle ==="Days"){
-            let days = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
-            let FundPerformancemap={};
-            for(let i=1;i<=days;i++){
-                let s = "Day "+i;
-                XAxisLabel.push(s);
-                FundPerformancemap[i] = []; 
+            let NumberOfDaysPreviousMonth = new Date(new Date().getFullYear(),new Date().getMonth(), 0).getDate();
+            let FundPerformanceMapDayWise={};
+            for(let i=1;i<=NumberOfDaysPreviousMonth;i++){
+                let XAxisPoint = "Day "+i;
+                XAxisLabel.push(XAxisPoint);
+                FundPerformanceMapDayWise[i] = []; 
             }
             
             if(SelectedFundId === ""){
                 Funds.forEach(element => {
                     if(parseInt(element.startDateOnFAS.substring(5,7)) === new Date().getMonth()){
                         let day = parseInt(element.startDateOnFAS.substring(8,10));
-                        FundPerformancemap[day].push(element.fundPerformanceTime);
+                        FundPerformanceMapDayWise[day].push(element.fundPerformanceTime);
                     }
                 });
-                for(const key in FundPerformancemap){
-                    let FundPerformance = FundPerformancemap[key];
-                    let sum=0,average;
-                    for(let i=0;i<FundPerformance.length;i++){
-                        sum += FundPerformance[i];
+                for(const key in FundPerformanceMapDayWise){
+                    let DayWiseFundPerformanceArray = FundPerformanceMapDayWise[key];
+                    let TotalFundPerformanceTime=0,DayWiseAverageFundPerformanceTime;
+                    for(let i=0;i<DayWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += DayWiseFundPerformanceArray[i];
                     }
-                    average = sum/FundPerformance.length;
-                    if(isNaN(average)){
+                    DayWiseAverageFundPerformanceTime = TotalFundPerformanceTime/DayWiseFundPerformanceArray.length;
+                    if(isNaN(DayWiseAverageFundPerformanceTime)){
                         AverageFundPerformanceTime.push(0);
                     }
                     else{
-                        AverageFundPerformanceTime.push(average);
+                        AverageFundPerformanceTime.push(DayWiseAverageFundPerformanceTime);
                     }
                 }
             }
@@ -233,28 +232,41 @@ export default function PerformanceStatistics(props) {
                     if(element.fundId === SelectedFundId){
                         if(parseInt(element.startDateOnFAS.substring(5,7)) === new Date().getMonth()){
                             let day = parseInt(element.startDateOnFAS.substring(8,10));
-                            FundPerformancemap[day].push(element.fundPerformanceTime);
+                            FundPerformanceMapDayWise[day].push(element.fundPerformanceTime);
                         }
                     }
                 });
-                console.log(FundPerformancemap);
-                for(const key in FundPerformancemap){
-                    let FundPerformance = FundPerformancemap[key];
-                    let sum=0,average;
-                    for(let i=0;i<FundPerformance.length;i++){
-                        sum += FundPerformance[i];
+                console.log(FundPerformanceMapDayWise);
+                for(const key in FundPerformanceMapDayWise){
+                    let DayWiseFundPerformanceArray = FundPerformanceMapDayWise[key];
+                    let TotalFundPerformanceTime=0,DayWiseAverageFundPerformanceTime;
+                    for(let i=0;i<DayWiseFundPerformanceArray.length;i++){
+                        TotalFundPerformanceTime += DayWiseFundPerformanceArray[i];
                     }
-                    average = sum/FundPerformance.length;
-                    if(isNaN(average)){
+                    DayWiseAverageFundPerformanceTime = TotalFundPerformanceTime/DayWiseFundPerformanceArray.length;
+                    if(isNaN(DayWiseAverageFundPerformanceTime)){
                         AverageFundPerformanceTime.push(0);
                     }
                     else{
-                        AverageFundPerformanceTime.push(average);
+                        AverageFundPerformanceTime.push(DayWiseAverageFundPerformanceTime);
                     }
                 }
                 console.log(AverageFundPerformanceTime);
             }
         }
+        /* Calculation Of SignOffDetails */
+        let SignOffDetailsTobeExtracted = (SelectedFundId==="")?1:SelectedFundId;
+
+        let XAxixDates = [],Delays=[];
+        SignOffDetails.forEach(element => {
+            if(element.fundId === SignOffDetailsTobeExtracted){
+                XAxixDates.push(element.idealDate.substring(0,10));
+                let actual = new Date(element.actualDate);
+                let ideal = new Date(element.idealDate);
+                let Delaydays = (actual.getTime()-ideal.getTime())/(3600*24*1000);
+                Delays.push(Delaydays);
+            }
+        });
 
     FundPerformanceOptions={
         Title:"Fund Performance",
@@ -271,20 +283,7 @@ export default function PerformanceStatistics(props) {
     };
 
 
-    /* Calculation Of SignOffDetails */
-    let SignOffDetailsTobeExtracted = (SelectedFundId==="")?1:SelectedFundId;
-
-    let XAxixDates = [],Delays=[];
-    SignOffDetails.forEach(element => {
-        if(element.fundId === SignOffDetailsTobeExtracted){
-            XAxixDates.push(element.idealDate.substring(0,10));
-            let actual = new Date(element.actualDate);
-            let ideal = new Date(element.idealDate);
-            let Delaydays = (actual.getTime()-ideal.getTime())/(3600*24*1000);
-            Delays.push(Delaydays);
-        }
-    });
-
+   
     SignOffDetailsOptions={
         Title: "Sign-Off Details",
         XAxisTitle: "Ideal Sign Off Dates",
